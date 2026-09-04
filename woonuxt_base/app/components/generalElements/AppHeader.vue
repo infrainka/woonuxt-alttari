@@ -3,7 +3,7 @@ const { isShowingSearch } = useSearching();
 </script>
 
 <template>
-  <header class="sticky top-0 z-40 bg-white shadow-md shadow-gray-200 border-b border-transparent outline-gray-950/10 outline">
+  <header class="sticky top-0 z-40 bg-black shadow-md shadow-gray-200 border-b border-transparent outline-gray-950/10 outline">
     <div class="container flex items-center justify-between py-4">
       <!-- Hook: Before header navigation -->
       <HookOutlet name="layout.header.beforeNav" as="div" />
@@ -29,3 +29,4 @@ const { isShowingSearch } = useSearching();
     </Transition>
   </header>
 </template>
+

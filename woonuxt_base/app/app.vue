@@ -64,7 +64,7 @@ useHead({
 
 html,
 body {
-  @apply bg-gray-100  text-gray-900;
+  @apply bg-black text-white;
   scroll-behavior: smooth;
 }
 
