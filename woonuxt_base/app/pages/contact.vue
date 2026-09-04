@@ -16,5 +16,10 @@
         repellendus obcaecati, numquam fuga ullam doloremque ea reprehenderit earum quam culpa neque dolor sint voluptates qui rem? Ipsam reiciendis non illum?
       </p>
     </div>
+    <div>
+        <h2 class="text-xl font-bold mb-4">Usein kysytyt kysymykset</h2>
+        <!-- This tag renders your new dynamic component! -->
+        <FaqAccordion />
+      </div>
   </div>
 </template>
