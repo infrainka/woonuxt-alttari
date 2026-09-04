@@ -300,7 +300,7 @@ const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : is
           :active-variation="activeVariation" />
         <NuxtImg
           v-else
-          class="relative aspect-square w-full min-w-0 rounded-xl object-contain skeleton"
+          class="relative aspect-square w-full min-w-0 rounded-xl object-cover skeleton"
           src="/images/placeholder.jpg"
           :alt="product?.name || 'Product'" />
 
@@ -422,5 +422,9 @@ input[type='number']::-webkit-outer-spin-button {
 /* Dark mode uses color-scheme to style native controls */
 .dark input[type='number'] {
   color-scheme: dark;
+}
+
+.prose {
+  color: white !important;
 }
 </style>

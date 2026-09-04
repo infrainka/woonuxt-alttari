@@ -1,6 +1,22 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
+@layer utilities {
+  .text-black:not(:hover),
+  [class*='text-gray-']:not(:hover),
+  [class*='text-slate-']:not(:hover),
+  [class*='text-zinc-']:not(:hover),
+  [class*='text-neutral-']:not(:hover),
+  [class*='text-stone-']:not(:hover) {
+    color: white !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: white !important;
+  }
+}
+
 /* Center container */
 .container {
   @apply mx-auto px-4 md:px-12 max-w-360;
