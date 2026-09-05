@@ -35,7 +35,7 @@ useSeoMeta({
 
     <section class="container my-16">
       <div class="flex items-end justify-between">
-        <h2 class="text-lg font-semibold md:text-2xl">Collections</h2>
+        <h2 class="text-lg font-semibold md:text-2xl">Kategoriat</h2>
         <NuxtLink class="text-primary-dark" to="/collections">{{ $t('general.viewAll') }}</NuxtLink>
       </div>
       <div class="grid justify-center grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-6">
@@ -43,33 +43,32 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="container grid gap-4 my-24 md:grid-cols-2 lg:grid-cols-4">
+    <section class="feature-benefits container grid gap-4 my-24 text-black md:grid-cols-2 lg:grid-cols-4">
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/box.svg" width="60" height="60" alt="Free Shipping" loading="lazy" />
+        <img class="feature-icon" src="/icons/box.svg" width="60" height="60" alt="Nopea toimitus" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">Free Shipping</h3>
-          <p class="text-sm">Free shipping on order over €50</p>
+          <h3 class="text-xl font-semibold">Nopea toimitus</h3>
+          <p class="text-sm">Kaikki pakkaan ja lähetän Suomesta. Myös nouto saatavilla Helsingistä.</p>
         </div>
       </div>
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/moneyback.svg" width="60" height="60" alt="Money Back" loading="lazy" />
+        <img class="feature-icon" src="/icons/moneyback.svg" width="60" height="60" alt="Tyytyväisyystakuu" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">Peace of Mind</h3>
-          <p class="text-sm">30 days money back guarantee</p>
+          <h3 class="text-xl font-semibold">Tyytyväisyystakuu</h3>
+          <p class="text-sm">30 päivän vaihto- ja palautusoikeus: Testaa koruja rauhassa.</p>
         </div>
       </div>
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/secure.svg" width="60" height="60" alt="Secure Payment" loading="lazy" />
+        <img class="feature-icon" src="/icons/package.svg" width="60" height="60" alt="Ilmainen toimitus" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">100% Payment Secure</h3>
-          <p class="text-sm">Your payment are safe with us.</p>
+          <h3 class="text-xl font-semibold">Yli 40€ ostoksista ilmainen toimitus</h3>
         </div>
       </div>
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img src="/icons/support.svg" width="60" height="60" alt="Support 24/7" loading="lazy" />
+        <img class="feature-icon" src="/icons/support.svg" width="60" height="60" alt="Vastaan nopeasti" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">Support 24/7</h3>
-          <p class="text-sm">24/7 Online support</p>
+          <h3 class="text-xl font-semibold">Vastaan nopeasti</h3>
+          <p class="text-sm">Voit ottaa yhteyttä somen kautta tai ajanvaraus lomakkeella :)</p>
         </div>
       </div>
     </section>
@@ -81,6 +80,9 @@ useSeoMeta({
       </div>
       <ProductRow :products="popularProducts" class="grid-cols-2 md:grid-cols-4 lg:grid-cols-5 mt-8" />
     </section>
+    <section class="container my-16">
+      <ContactForm />
+    </section>
   </main>
 </template>
 
@@ -89,5 +91,16 @@ useSeoMeta({
   max-height: min(8vw, 120px);
   object-fit: contain;
   object-position: center;
+}
+
+.feature-icon {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(97%) saturate(2571%) hue-rotate(355deg) brightness(87%) contrast(106%);
+  flex: 0 0 auto;
+}
+
+.feature-benefits,
+.feature-benefits h3,
+.feature-benefits p {
+  color: #000 !important;
 }
 </style>

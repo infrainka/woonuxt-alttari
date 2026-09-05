@@ -162,6 +162,8 @@ export default defineNuxtConfig({
       { code: 'nl_NL', file: 'nl-NL.json', name: 'Nederlands 🇳🇱' },
       { code: 'pt_BR', file: 'pt-BR.json', name: 'Português 🇧🇷' },
       { code: 'ko_KR', file: 'ko-KR.json', name: '한국어 🇰🇷' },
+      // @ts-expect-error - Bypassing strict type checking for custom locale
+      { code: 'fi_FI', file: 'fi-FI.json', name: 'Suomi 🇫🇮' },
     ],
     langDir: 'locales',
     defaultLocale: 'en_US',

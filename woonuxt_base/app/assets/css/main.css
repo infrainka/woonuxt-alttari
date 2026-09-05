@@ -13,7 +13,55 @@
 
   input::placeholder,
   textarea::placeholder {
-    color: white !important;
+    color: #9ca3af !important;
+  }
+
+  input[class*='text-'],
+  textarea[class*='text-'],
+  select[class*='text-'] {
+    color: #111827 !important;
+  }
+
+  #price-from,
+  #price-to {
+    color: #111827 !important;
+  }
+
+  #price-from::placeholder,
+  #price-to::placeholder {
+    color: #9ca3af !important;
+  }
+
+  .cart-panel .text-gray-900 {
+    color: #111827 !important;
+  }
+
+  .cart-panel .text-gray-800 {
+    color: #1f2937 !important;
+  }
+
+  .cart-panel .text-gray-600 {
+    color: #4b5563 !important;
+  }
+
+  .cart-panel .text-gray-500 {
+    color: #6b7280 !important;
+  }
+
+  .cart-panel .text-gray-400 {
+    color: #9ca3af !important;
+  }
+
+  .site-footer .text-gray-900 {
+    color: #111827 !important;
+  }
+
+  .site-footer .text-gray-700 {
+    color: #374151 !important;
+  }
+
+  .site-footer .text-gray-600 {
+    color: #4b5563 !important;
   }
 }
 
