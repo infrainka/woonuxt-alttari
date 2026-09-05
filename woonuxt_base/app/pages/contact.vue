@@ -1,25 +1,64 @@
 <template>
   <div class="container my-8">
-    <h1 class="mb-8 text-3xl font-semibold text-primary">Contact Page</h1>
-    <div class="my-8 prose">
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat facilis, commodi illum repellat accusamus praesentium quaerat ut ducimus ipsam deserunt,
-        a voluptate id similique ullam, provident tenetur molestiae ad. Ea aperiam esse eaque aut, beatae consectetur nam velit unde! Et excepturi quam eos
-        labore, nulla impedit recusandae quaerat maxime expedita.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nemo voluptate neque in odio officia assumenda nulla cumque. Veniam et tenetur accusantium,
-        fuga pariatur repellendus impedit. Quod sint odio quisquam! Sequi repellendus eum dolorum eveniet, quidem dolor necessitatibus velit sunt esse maiores.
-        Eum odit dolorum mollitia? Adipisci amet hic veniam debitis architecto nobis necessitatibus inventore iure ullam cum illo quae quam, excepturi beatae
-        itaque exercitationem magnam quidem aspernatur iusto. Quos, reprehenderit? Dignissimos autem recusandae qui sit cum velit consequatur pariatur illum
-        omnis excepturi, adipisci ab eius, optio, temporibus iure unde inventore. Maxime officiis tempore voluptatum ipsa, ab possimus atque corporis
-        repellendus obcaecati, numquam fuga ullam doloremque ea reprehenderit earum quam culpa neque dolor sint voluptates qui rem? Ipsam reiciendis non illum?
-      </p>
-    </div>
-    <div>
-        <h2 class="text-xl font-bold mb-4">Usein kysytyt kysymykset</h2>
-        <!-- This tag renders your new dynamic component! -->
-        <FaqAccordion />
+    <section class="contact-intro grid gap-8 rounded-xl bg-white p-6 shadow-sm md:grid-cols-[256px_1fr] md:items-center md:p-8">
+      <NuxtPicture
+        src="/images/myyntikuva-editoitu.webp"
+        alt="Joonas Alttari"
+        width="512"
+        height="512"
+        loading="lazy"
+        class="contact-image aspect-square w-full overflow-hidden rounded-xl" />
+      <div class="prose max-w-none">
+        <h1>Alttarista</h1>
+        <p>Hei!</p>
+        <p>Toivon, että löydät etsimäsi pienestä, mutta kasvavasta korukaupastani, jonka ytimessä on keskiaikainen symboliikka ja goottinen fantasia.</p>
+        <p>Huolella valittuja ja testattuja ruostumattomasta teräksestä valmistettuja koruja.</p>
+        <p>Tervetuloa!</p>
+        <p><em>Joonas<br />Alttari</em></p>
       </div>
+    </section>
+
+    <div class="contact-faq">
+            <h2 class="alttari-form-title">Tietoa Alttarista</h2>
+
+      <FaqAccordion />
+    </div>
   </div>
 </template>
+
+<style scoped>
+.contact-intro,
+.contact-intro h1,
+.contact-intro p,
+.contact-intro em {
+  color: #111827 !important;
+}
+
+.contact-faq {
+  margin-top: 2rem;
+}
+
+:deep(.contact-image),
+:deep(.contact-image img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+:deep(.contact-image img) {
+  object-fit: cover;
+}
+.alttari-form-title {
+  text-align: center;
+  color: #ffffff;
+  font-family: "Lora", serif;
+  font-weight: 400;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  border-bottom: 1px solid var(--alttari-border);
+  padding-bottom: 15px;
+  font-size: 30px;
+}
+</style>

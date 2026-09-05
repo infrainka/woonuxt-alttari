@@ -46,8 +46,8 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'en' },
       link: [
-        { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' },
+        { rel: 'icon', href: '/logo.png', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: '/logo.png', sizes: '180x180' },
       ],
     },
     pageTransition: { name: 'page', mode: 'default' },
@@ -166,7 +166,7 @@ export default defineNuxtConfig({
       { code: 'fi_FI', file: 'fi-FI.json', name: 'Suomi 🇫🇮' },
     ],
     langDir: 'locales',
-    defaultLocale: 'en_US',
+    defaultLocale: 'fi_FI',
     strategy: 'no_prefix',
   },
 });

@@ -10,8 +10,17 @@ const [{ data }, { data: productData }] = await Promise.all([
 const productCategories = data.value?.productCategories?.nodes || [];
 const popularProducts = productData.value?.products?.nodes || [];
 
+const categoryPreviewImages: Record<string, string> = {
+  sormukset: '/images/evileye.webp',
+  korvakorut: '/images/ensis.webp',
+  'suuret-kaulakorut': '/images/fleurdelis.webp',
+  kaikki: '/images/hero-4.jpg',
+  rannekorut: '/images/ourobos.avif',
+  'pienet-kaulakorut': '/images/miekka.webp',
+};
+
 useSeoMeta({
-  title: `Home`,
+  title: `Etusivu`,
   ogTitle: siteName,
   description: description,
   ogDescription: shortDescription,
@@ -39,7 +48,12 @@ useSeoMeta({
         <NuxtLink class="text-primary-dark" to="/collections">{{ $t('general.viewAll') }}</NuxtLink>
       </div>
       <div class="grid justify-center grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-6">
-        <CategoryCard v-for="(category, i) in productCategories" :key="i" class="w-full" :node="category" />
+        <CategoryCard
+          v-for="(category, i) in productCategories"
+          :key="i"
+          class="w-full"
+          :node="category"
+          :preview-image="categoryPreviewImages[category.slug]" />
       </div>
     </section>
 

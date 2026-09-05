@@ -3,6 +3,7 @@ const { FALLBACK_IMG } = useHelpers();
 defineProps({
   node: { type: Object, required: true },
   imageLoading: { type: String as PropType<'lazy' | 'eager'>, default: 'lazy' },
+  previewImage: { type: String, default: '' },
 });
 
 const imgWidth = 220;
@@ -17,7 +18,7 @@ const imgHeight = Math.round(imgWidth * 1.125);
     <NuxtPicture
       :width="imgWidth"
       :height="imgHeight"
-      :src="node.image?.sourceUrl || FALLBACK_IMG"
+      :src="node.image?.sourceUrl || previewImage || FALLBACK_IMG"
       :alt="node.image?.altText || node.name"
       :title="node.image?.title || node.name"
       :loading="imageLoading"
