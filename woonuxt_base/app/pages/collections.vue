@@ -4,55 +4,86 @@ import type { Product } from '#types/gql';
 type Collection = {
   slug: string;
   name: string;
+  description?: string | null;
   products: Product[];
 };
 
+// 1. Fetch products as usual
 const { data: productsData } = await useAsyncGql('getProducts');
 const products = (productsData.value?.products?.nodes || []) as Product[];
+
+// 2. Fetch collections using a runtime variable to bypass local validation
+const { data: collectionsData } = await useAsyncGql('getCollections', {
+  tax: ['PAKOKOELMAT' as any]
+});
+const rawCollections = collectionsData.value?.terms?.nodes || [];
+
 const collections: Collection[] = [];
 
-for (const product of products) {
-  const collectionTerms =
-    product.terms?.nodes?.filter(
-      (term) => term?.taxonomyName === 'pa_kokoelmat' && term.slug && term.slug !== 'ei-kokoelmaa' && term.slug !== 'ei_kokoelmaa',
-    ) || [];
+// 3. Build the collections array
+for (const term of rawCollections) {
+  const slug = term.slug as string;
+  
+  // Skip the "Ei kokoelmaa" term
+  if (slug === 'ei-kokoelmaa' || slug === 'ei_kokoelmaa') continue;
 
-  for (const term of collectionTerms) {
-    const slug = term.slug as string;
-    const existingCollection = collections.find((collection) => collection.slug === slug);
+  // Find all products that belong to this collection
+  const collectionProducts = products.filter(product => 
+    product.terms?.nodes?.some(t => t?.taxonomyName === 'pa_kokoelmat' && t.slug === slug)
+  );
 
-    if (existingCollection) {
-      if (existingCollection.products.length < 8) existingCollection.products.push(product);
-      continue;
-    }
-
+  // Only render the collection section if it actually has products
+  if (collectionProducts.length > 0) {
     collections.push({
       slug,
-      name: decodeURIComponent(slug).replace(/-/g, ' '),
-      products: [product],
+      name: term.name || decodeURIComponent(slug).replace(/-/g, ' '),
+      description: term.description, // We finally have our description!
+      products: collectionProducts.slice(0, 8),
     });
   }
 }
 
 useHead({
-  title: 'Collections',
+  title: 'Kokoelmat - Alttari',
   meta: [{ name: 'description', content: 'Explore our product collections' }],
 });
 </script>
 
 <template>
-  <main class="container py-6">
-    <div v-if="collections.length" class="grid gap-16">
-      <section v-for="collection in collections" :key="collection.slug" class="grid gap-6 border-t-2 border-gray-400 pt-10 first:border-t-0 first:pt-0">
-        <div class="flex items-center gap-4">
-          <span class="h-8 w-1 shrink-0 bg-primary" aria-hidden="true"></span>
-          <h1 class="text-3xl font-bold capitalize tracking-wide md:text-4xl">{{ collection.name }}</h1>
+  <main class="container py-12 text-white">
+    
+    <div v-if="collections.length" class="grid gap-20">
+      
+      <!-- Changed border-gray-400 to border-gray-800 to match the dark theme -->
+      <section v-for="collection in collections" :key="collection.slug" class="grid gap-8 border-t border-gray-800 pt-16 first:border-t-0 first:pt-0">
+        
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-4">
+            <!-- Forced the accent line to your Alttari red -->
+            <span class="h-8 w-1 shrink-0 bg-[#9B1003]" aria-hidden="true"></span>
+            
+            <!-- Changed to h2 for better SEO -->
+            <h2 class="text-3xl font-bold capitalize tracking-wide md:text-4xl">{{ collection.name }}</h2>
+          </div>
+          
+          <!-- 4. Render the WordPress description -->
+          <div 
+            v-if="collection.description" 
+            class="prose prose-invert max-w-2xl text-gray-400 mt-2" 
+            v-html="collection.description"
+          ></div>
         </div>
+
         <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
           <ProductCard v-for="(product, index) in collection.products" :key="product.id || product.slug || index" :node="product" :index="index" />
         </div>
+        
       </section>
     </div>
-    <div v-else class="py-16 text-center text-gray-500">No collections found.</div>
+    
+    <div v-else class="py-16 text-center text-gray-500">
+      Kokoelmia ei löytynyt.
+    </div>
+    
   </main>
 </template>

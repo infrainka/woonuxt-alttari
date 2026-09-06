@@ -3,63 +3,40 @@ const { wooNuxtVersionInfo } = useHelpers();
 </script>
 
 <template>
-  <footer class="site-footer bg-white order-last">
-    <div class="container flex flex-wrap justify-between gap-12 my-24 md:gap-24">
-      <div class="mr-auto">
+  <footer class="site-footer bg-[#1a1a1a] text-white py-12 mt-12 order-last border-t border-gray-800">
+    <div class="container flex flex-col gap-8">
+      
+      <!-- Top Section: Logo & Description -->
+      <div class="flex flex-col items-center md:items-start text-center md:text-left max-w-lg mx-auto md:mx-0">
         <Logo />
-        <WebsiteShortDescription />
-        <div class="inline-flex gap-2 justify-start mt-8">
-          <LangSwitcher />
-        </div>
+        <WebsiteShortDescription class="mt-4 text-sm leading-relaxed" />
       </div>
-      <div class="w-[42.857%] lg:w-auto">
-        <div class="mb-1 font-semibold text-gray-900">{{ $t('general.information') }}</div>
-        <div class="text-sm text-gray-700">
-          <a class="py-1.5 block" href="https://github.com/scottyzen/woonuxt?tab=readme-ov-file#next-generation-front-end-for-woocommerce" target="_blank">{{
-            $t('general.about')
-          }}</a>
-          <a href="/" class="py-1.5 block">{{ $t('general.careers') }}</a>
-          <a href="/" class="py-1.5 block">{{ $t('general.press') }}</a>
-          <a href="https://woonuxt.com/faq" class="py-1.5 block" rel="noreferrer" target="_blank">FAQ's</a>
+
+      <!-- Divider -->
+      <hr class="border-gray-800" />
+
+      <!-- Bottom Section: Legal & Copyright -->
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
+        
+        <!-- Left side: Copyright -->
+        <div class="copyright text-center md:text-left">
+          {{ $t('footer.copyright') }}
         </div>
-      </div>
-      <div class="w-[42.857%] lg:w-auto">
-        <div class="mb-1 font-semibold text-gray-900">{{ $t('general.products') }}</div>
-        <div class="text-sm text-gray-700">
-          <NuxtLink to="/products" class="py-1.5 block">{{ $t('shop.newArrivals') }}</NuxtLink>
-          <NuxtLink to="/products?filter=sale[true]" class="py-1.5 block">{{ $t('shop.onSale') }}</NuxtLink>
-          <NuxtLink to="/products?orderby=rating&order=ASC&filter=rating[1]" class="py-1.5 block">{{ $t('shop.topRated') }}</NuxtLink>
-          <a href="/" class="py-1.5 block">{{ $t('shop.giftCards') }}</a>
+        
+        <!-- Right side: Legal Links -->
+        <div class="flex flex-wrap justify-center items-center gap-6">
+          <NuxtLink to="/privacy-policy" class="hover:text-white transition-colors">
+            {{ $t('footer.privacy') }}
+          </NuxtLink>
+          <NuxtLink to="/terms" class="hover:text-white transition-colors">
+            {{ $t('footer.terms') }}
+          </NuxtLink>
+          
+          <LangSwitcher class="ml-4" />
         </div>
+        
       </div>
-      <div class="w-[42.857%] lg:w-auto">
-        <div class="mb-1 font-semibold text-gray-900">{{ $t('general.customerService') }}</div>
-        <div class="text-sm text-gray-700">
-          <NuxtLink to="/contact" class="py-1.5 block">{{ $t('general.contactUs') }}</NuxtLink>
-          <a href="/" class="py-1.5 block">{{ $t('general.shippingReturns') }}</a>
-          <a href="/" class="py-1.5 block">{{ $t('general.privacyPolicy') }}</a>
-          <a href="/" class="py-1.5 block">{{ $t('general.termsConditions') }}</a>
-        </div>
-      </div>
-      <div class="w-[42.857%] lg:w-auto">
-        <div class="mb-1 font-semibold text-gray-900">{{ $t('account.myAccount') }}</div>
-        <div class="text-sm text-gray-700">
-          <NuxtLink to="/my-account/" class="py-1.5 block">{{ $t('account.myAccount') }}</NuxtLink>
-          <NuxtLink to="/my-account/?tab=orders" class="py-1.5 block">{{ $t('shop.orderHistory') }}</NuxtLink>
-          <NuxtLink to="/wishlist" class="py-1.5 block">{{ $t('shop.wishlist') }}</NuxtLink>
-          <a href="/" class="py-1.5 block">{{ $t('general.newsletter') }}</a>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="border-t border-gray-200 pt-2 flex items-center justify-center mb-6">
-        <div class="copywrite">
-          <p class="py-4 text-xs text-center text-gray-600">
-            <a href="https://woonuxt.com" :title="`Built with WooNuxt v${wooNuxtVersionInfo}`" target="_blank">Built with WooNuxt v{{ wooNuxtVersionInfo }}</a>
-          </p>
-        </div>
-        <SocialIcons class="ml-auto" />
-      </div>
+      
     </div>
 
     <!-- Hook: Bottom of footer -->

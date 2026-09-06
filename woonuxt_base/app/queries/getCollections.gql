@@ -1,0 +1,9 @@
+query getCollections($tax: [TaxonomyEnum]) {
+  terms(where: {taxonomies: $tax}, first: 50) {
+    nodes {
+      name
+      slug
+      description
+    }
+  }
+}

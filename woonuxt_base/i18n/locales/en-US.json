@@ -39,7 +39,7 @@
     "shippingAddress": "Shipping Address",
     "shippingAddressDescription": "Enter the address where you want your order delivered.",
     "information": "Information",
-    "about": "About",
+    "about": "About Alttari",
     "careers": "Careers",
     "press": "Press",
     "contactUs": "Contact Us",
@@ -219,5 +219,13 @@
   },
   "faq": {
     "loading": "Loading..."
+  },
+  "topbar": {
+    "socials": "Find me on social media ➝"
+  },
+  "footer": {
+    "copyright": "Copyright 2026 Alttari | All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Shipping, Exchange & Return Policies"
   }
 }

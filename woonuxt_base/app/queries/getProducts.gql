@@ -12,6 +12,7 @@ query getProducts($after: String, $slug: [String], $first: Int = 9999, $orderby:
       name
       slug
       type
+      description
       databaseId
       id
       averageRating

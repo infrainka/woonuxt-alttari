@@ -221,5 +221,13 @@
   },
   "faq": {
     "loading": "Ladataan..."
+  },
+  "topbar": {
+    "socials": "Löydät minut somesta ➝"
+  },
+  "footer": {
+    "copyright": "Copyright 2026 Alttari | Kaikki oikeudet pidätetään.",
+    "privacy": "Tietosuojalauseke",
+    "terms": "Toimitus, vaihto -ja palautusehdot"
   }
 }
