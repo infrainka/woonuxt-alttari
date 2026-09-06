@@ -11,6 +11,16 @@
     color: white !important;
   }
 
+  /* Allow text-gray-900 to stay dark */
+  .text-gray-900 {
+    color: rgb(17 24 39) !important;
+  }
+
+  /* Force red hovers to show */
+  .hover\:text-red-500:hover {
+    color: rgb(239 68 68) !important;
+  }
+
   input::placeholder,
   textarea::placeholder {
     color: #9ca3af !important;
@@ -72,7 +82,7 @@
 
 @theme {
   /* Primary Color Shades */
-  --color-primary: var(--color-primary, #7f54b2);
+  --color-primary: #9B1003;
   --color-primary-light: color-mix(in oklab, var(--color-primary) 85%, white);
   --color-primary-dark: color-mix(in oklab, var(--color-primary) 85%, black);
 

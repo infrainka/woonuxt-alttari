@@ -18,6 +18,7 @@
     "products": "Products",
     "product": "Product",
     "contact": "Contact",
+    "collections": "Collections",
     "menu": "Menu",
     "color": "Color",
     "choose": "Choose | Choose",
@@ -46,6 +47,12 @@
     "privacyPolicy": "Privacy Policy",
     "termsConditions": "Terms & Conditions",
     "updating": "Updating"
+  },
+"hero": {
+    "title1": "Bold and durable",
+    "title2": "steel jewelry",
+    "description": "Jewelry for lovers of dark aesthetics. All metal parts are made of stainless steel. Welcome to explore!",
+    "button": "View all jewelry"
   },
   "account": {
     "changePassword": "Change Password",
@@ -178,5 +185,39 @@
     "invalidPasswordResetLink": "Password reset link is invalid.",
     "general": "Something went wrong",
     "noOrder": "We could not find your order. Please try again later."
+  },
+  "features": {
+    "fastDelivery": "Fast Delivery",
+    "fastDeliveryDesc": "Everything is packed and shipped from Finland. Pickup also available in Helsinki.",
+    "guarantee": "Satisfaction Guarantee",
+    "guaranteeDesc": "30-day exchange and return policy: Test the jewelry in peace.",
+    "freeShipping": "Free shipping on orders over 40€",
+    "fastResponse": "Fast Response",
+    "fastResponseDesc": "You can reach out via social media or the contact form :)"
+  },
+  "contactForm": {
+    "title": "Any questions?",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "example{'@'}email.com",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Write your message...",
+    "btnSend": "Send",
+    "btnSending": "Sending...",
+    "successMsg": "Message sent! The raven is carrying your message. Await its return soon.",
+    "errorMsg": "Connection error. Please try again."
+  },
+"aboutPage": {
+    "title": "About Alttari",
+    "greeting": "Hello!",
+    "p1": "I hope you find what you're looking for in my small but growing jewelry shop, rooted in medieval symbolism and gothic fantasy.",
+    "p2": "Carefully selected and tested stainless steel jewelry.",
+    "p3": "Welcome!",
+    "signoff1": "Joonas",
+    "signoff2": "Alttari"
+  },
+  "faq": {
+    "loading": "Loading..."
   }
 }

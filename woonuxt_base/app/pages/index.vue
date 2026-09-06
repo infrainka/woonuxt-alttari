@@ -33,14 +33,6 @@ useSeoMeta({
   <main>
     <HeroBanner />
 
-    <div class="container flex flex-wrap items-center justify-center my-16 text-center gap-x-8 gap-y-4 brand lg:justify-between">
-      <img src="/images/logoipsum-211.svg" alt="Brand 1" width="132" height="35" />
-      <img src="/images/logoipsum-221.svg" alt="Brand 2" width="119" height="30" />
-      <img src="/images/logoipsum-225.svg" alt="Brand 3" width="49" height="48" />
-      <img src="/images/logoipsum-280.svg" alt="Brand 4" width="78" height="30" />
-      <img src="/images/logoipsum-284.svg" alt="Brand 5" width="70" height="44" />
-      <img src="/images/logoipsum-215.svg" alt="Brand 6" width="132" height="40" />
-    </div>
 
     <section class="container my-16">
       <div class="flex items-end justify-between">
@@ -57,32 +49,32 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="feature-benefits container grid gap-4 my-24 text-black md:grid-cols-2 lg:grid-cols-4">
+<section class="feature-benefits container grid gap-4 my-24 text-black md:grid-cols-2 lg:grid-cols-4">
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img class="feature-icon" src="/icons/box.svg" width="60" height="60" alt="Nopea toimitus" loading="lazy" />
+        <img class="feature-icon" src="/icons/box.svg" width="60" height="60" :alt="$t('features.fastDelivery')" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">Nopea toimitus</h3>
-          <p class="text-sm">Kaikki pakkaan ja lähetän Suomesta. Myös nouto saatavilla Helsingistä.</p>
+          <h3 class="text-xl font-semibold">{{ $t('features.fastDelivery') }}</h3>
+          <p class="text-sm">{{ $t('features.fastDeliveryDesc') }}</p>
         </div>
       </div>
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img class="feature-icon" src="/icons/moneyback.svg" width="60" height="60" alt="Tyytyväisyystakuu" loading="lazy" />
+        <img class="feature-icon" src="/icons/moneyback.svg" width="60" height="60" :alt="$t('features.guarantee')" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">Tyytyväisyystakuu</h3>
-          <p class="text-sm">30 päivän vaihto- ja palautusoikeus: Testaa koruja rauhassa.</p>
+          <h3 class="text-xl font-semibold">{{ $t('features.guarantee') }}</h3>
+          <p class="text-sm">{{ $t('features.guaranteeDesc') }}</p>
         </div>
       </div>
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img class="feature-icon" src="/icons/package.svg" width="60" height="60" alt="Ilmainen toimitus" loading="lazy" />
+        <img class="feature-icon" src="/icons/package.svg" width="60" height="60" :alt="$t('features.freeShipping')" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">Yli 40€ ostoksista ilmainen toimitus</h3>
+          <h3 class="text-xl font-semibold">{{ $t('features.freeShipping') }}</h3>
         </div>
       </div>
       <div class="flex items-center gap-8 p-8 bg-white rounded-lg">
-        <img class="feature-icon" src="/icons/support.svg" width="60" height="60" alt="Vastaan nopeasti" loading="lazy" />
+        <img class="feature-icon" src="/icons/support.svg" width="60" height="60" :alt="$t('features.fastResponse')" loading="lazy" />
         <div>
-          <h3 class="text-xl font-semibold">Vastaan nopeasti</h3>
-          <p class="text-sm">Voit ottaa yhteyttä somen kautta tai ajanvaraus lomakkeella :)</p>
+          <h3 class="text-xl font-semibold">{{ $t('features.fastResponse') }}</h3>
+          <p class="text-sm">{{ $t('features.fastResponseDesc') }}</p>
         </div>
       </div>
     </section>

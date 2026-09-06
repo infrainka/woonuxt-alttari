@@ -11,18 +11,19 @@
 :img-attrs="{ class: 'object-cover w-full h-full' }" />
 <div class="container absolute inset-0 flex flex-col items-start justify-center text-white">
   
-  <h1 class="text-3xl font-bold md:mb-4 md:text-4xl lg:text-6xl">Näyttäviä ja kestäviä <br> teräskoruja</h1>
-  
-  <h2 class="text-lg font-bold md:mb-4 lg:text-3xl"></h2>
-  
-  <div class="max-w-sm mb-8 text-md font-light lg:max-w-md text-balance">
-    <p>Koruja tummanpuhuvan estetiikan ystäville. Kaikki metalliosat ovat ruostumatonta terästä. Tervetuloa tutustumaan!</p>
-  </div>
-  
-  <!-- Kept the button dark so it stands out against the white text, but you can change this too -->
- <NuxtLink class="btn btn-primary px-6 py-3 font-bold text-white bg-red-800 rounded-xl hover:bg-red-700 transition-colors" to="/products">
-  Kaikki korut
-</NuxtLink>
+<h1 class="text-3xl font-bold md:mb-4 md:text-4xl lg:text-6xl">
+        {{ $t('hero.title1') }} <br> {{ $t('hero.title2') }}
+      </h1>
+      
+      <h2 class="text-lg font-bold md:mb-4 lg:text-3xl"></h2>
+      
+      <div class="max-w-sm mb-8 text-md font-light lg:max-w-md text-balance">
+        <p>{{ $t('hero.description') }}</p>
+      </div>
+      
+      <NuxtLink class="btn btn-primary px-6 py-3 font-bold text-white bg-red-800 rounded-xl hover:bg-red-700 transition-colors" to="/products">
+        {{ $t('hero.button') }}
+      </NuxtLink>
 
 </div>
   </div>

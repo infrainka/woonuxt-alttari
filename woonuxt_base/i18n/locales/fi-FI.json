@@ -48,6 +48,12 @@
     "termsConditions": "Käyttöehdot",
     "updating": "Päivitetään"
   },
+"hero": {
+    "title1": "Näyttäviä ja kestäviä",
+    "title2": "teräskoruja",
+    "description": "Koruja tummanpuhuvan estetiikan ystäville. Kaikki metalliosat ovat ruostumatonta terästä. Tervetuloa tutustumaan!",
+    "button": "Kaikki korut"
+  },
   "account": {
     "login": "Kirjaudu sisään",
     "logout": "Kirjaudu ulos",
@@ -181,5 +187,39 @@
     "invalidPasswordResetLink": "Salasanan nollauslinkki on virheellinen.",
     "general": "Jotain meni pieleen",
     "noOrder": "Tilaustasi ei löytynyt. Yritä myöhemmin uudelleen."
+  },
+  "features": {
+    "fastDelivery": "Nopea toimitus",
+    "fastDeliveryDesc": "Kaikki pakkaan ja lähetän Suomesta. Myös nouto saatavilla Helsingistä.",
+    "guarantee": "Tyytyväisyystakuu",
+    "guaranteeDesc": "30 päivän vaihto- ja palautusoikeus: Testaa koruja rauhassa.",
+    "freeShipping": "Yli 40€ ostoksista ilmainen toimitus",
+    "fastResponse": "Vastaan nopeasti",
+    "fastResponseDesc": "Voit ottaa yhteyttä somen kautta tai ajanvaraus lomakkeella :)"
+  },
+  "contactForm": {
+    "title": "Tuliko kysyttävää?",
+    "nameLabel": "Nimi",
+    "namePlaceholder": "Nimesi",
+    "emailLabel": "Sähköposti",
+    "emailPlaceholder": "esimerkki{'@'}email.com",
+    "messageLabel": "Viesti",
+    "messagePlaceholder": "Kirjoita viesti...",
+    "btnSend": "Lähetä",
+    "btnSending": "Lähetetään...",
+    "successMsg": "Viesti lähetetty! Korppi vie viestisi perille. Odota sen paluuta pian.",
+    "errorMsg": "Yhteysvirhe. Yritä uudelleen."
+  },
+"aboutPage": {
+    "title": "Alttarista",
+    "greeting": "Hei!",
+    "p1": "Toivon, että löydät etsimäsi pienestä, mutta kasvavasta korukaupastani, jonka ytimessä on keskiaikainen symboliikka ja goottinen fantasia.",
+    "p2": "Huolella valittuja ja testattuja ruostumattomasta teräksestä valmistettuja koruja.",
+    "p3": "Tervetuloa!",
+    "signoff1": "Joonas",
+    "signoff2": "Alttari"
+  },
+  "faq": {
+    "loading": "Ladataan..."
   }
 }

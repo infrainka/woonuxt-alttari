@@ -55,7 +55,7 @@ const moveToWishList = () => {
       </div>
       <div class="inline-flex gap-2 flex-col items-end">
         <QuantityInput :item />
-        <div class="text-xs text-gray-400 group-hover:text-gray-700 flex leading-none items-center">
+        <div class="text-xs text-gray-400 flex leading-none items-center">
           <button
             v-if="storeSettings.showMoveToWishlist"
             class="mr-2 pr-2 border-r border-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
@@ -69,7 +69,7 @@ const moveToWishList = () => {
             aria-label="Remove Item"
             type="button"
             :disabled="isOptimisticItem"
-            class="flex items-center gap-1 hover:text-red-500 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            class="flex items-center gap-1 text-gray-900 hover:text-red-500 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             @click="removeItem">
             <Icon name="ion:trash" class="hidden md:inline-block" size="12" />
           </button>

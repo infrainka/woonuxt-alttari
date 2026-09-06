@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+const { t } = useI18n();
 
 // State to handle the feedback message after submission
 const formStatus = ref(null);
@@ -21,13 +22,12 @@ const handleSubmit = (event) => {
   })
     .then(() => {
       formStatus.value = 'success';
-      // Re-using your exact success message from the original PHP file
-      feedbackMessage.value = 'Viesti lähetetty! Korppi vie viestisi perille. Odota sen paluuta pian.';
+      feedbackMessage.value = t('contactForm.successMsg');
       myForm.reset();
     })
     .catch((error) => {
       formStatus.value = 'error';
-      feedbackMessage.value = 'Yhteysvirhe. Yritä uudelleen.';
+      feedbackMessage.value = t('contactForm.errorMsg');
     })
     .finally(() => {
       isSubmitting.value = false;
@@ -37,7 +37,6 @@ const handleSubmit = (event) => {
 
 <template>
   <div class="alttari-form-container">
-    <!-- Success/Error Feedback Banner -->
     <div 
       v-if="formStatus" 
       class="alttari-feedback"
@@ -46,31 +45,28 @@ const handleSubmit = (event) => {
       {{ feedbackMessage }}
     </div>
 
-    <!-- The data-netlify="true" attribute is what routes the email! -->
     <form name="alttari-contact" method="POST" data-netlify="true" class="alttari-contact-form" @submit="handleSubmit">
-      
-      <!-- Hidden input required by Netlify -->
       <input type="hidden" name="form-name" value="alttari-contact" />
 
-      <h2 class="alttari-form-title">Tuliko kysyttävää?</h2>
+      <h2 class="alttari-form-title">{{ $t('contactForm.title') }}</h2>
       
       <div class="alttari-form-group">
-        <label for="alttari-name">Nimi</label>
-        <input type="text" id="alttari-name" name="name" placeholder="Nimesi" required>
+        <label for="alttari-name">{{ $t('contactForm.nameLabel') }}</label>
+        <input type="text" id="alttari-name" name="name" :placeholder="$t('contactForm.namePlaceholder')" required>
       </div>
       
       <div class="alttari-form-group">
-        <label for="alttari-email">Sähköposti</label>
-        <input type="email" id="alttari-email" name="email" placeholder="esimerkki@email.com" required>
+        <label for="alttari-email">{{ $t('contactForm.emailLabel') }}</label>
+        <input type="email" id="alttari-email" name="email" :placeholder="$t('contactForm.emailPlaceholder')" required>
       </div>
       
       <div class="alttari-form-group">
-        <label for="alttari-message">Viesti</label>
-        <textarea id="alttari-message" name="message" rows="5" placeholder="Kirjoita viesti..." required></textarea>
+        <label for="alttari-message">{{ $t('contactForm.messageLabel') }}</label>
+        <textarea id="alttari-message" name="message" rows="5" :placeholder="$t('contactForm.messagePlaceholder')" required></textarea>
       </div>
       
       <button type="submit" class="alttari-button" :disabled="isSubmitting">
-        {{ isSubmitting ? 'Lähetetään...' : 'Lähetä' }}
+        {{ isSubmitting ? $t('contactForm.btnSending') : $t('contactForm.btnSend') }}
       </button>
     </form>
   </div>

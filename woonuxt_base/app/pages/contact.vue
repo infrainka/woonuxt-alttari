@@ -8,13 +8,15 @@
         height="512"
         loading="lazy"
         class="contact-image aspect-square w-full overflow-hidden rounded-xl" />
-      <div class="prose max-w-none">
-        <h1>Alttarista</h1>
-        <p>Hei!</p>
-        <p>Toivon, että löydät etsimäsi pienestä, mutta kasvavasta korukaupastani, jonka ytimessä on keskiaikainen symboliikka ja goottinen fantasia.</p>
-        <p>Huolella valittuja ja testattuja ruostumattomasta teräksestä valmistettuja koruja.</p>
-        <p>Tervetuloa!</p>
-        <p><em>Joonas<br />Alttari</em></p>
+     <div class="prose max-w-none">
+        <h1>{{ $t('aboutPage.title') }}</h1>
+        <p>{{ $t('aboutPage.greeting') }}</p>
+        <p>{{ $t('aboutPage.p1') }}</p>
+        <p>{{ $t('aboutPage.p2') }}</p>
+        <p>{{ $t('aboutPage.p3') }}</p>
+        
+        <!-- The <br /> is now safely hardcoded in the template -->
+        <p><em>{{ $t('aboutPage.signoff1') }}<br />{{ $t('aboutPage.signoff2') }}</em></p>
       </div>
     </section>
 

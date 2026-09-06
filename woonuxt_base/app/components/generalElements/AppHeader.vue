@@ -12,7 +12,7 @@ const { isShowingSearch } = useSearching();
         <MenuTrigger class="lg:hidden" />
         <Logo class="w-40" />
       </div>
-      <MainMenu class="items-center hidden gap-6 text-sm text-gray-500 lg:flex lg:px-4" />
+      <MainMenu class="items-center hidden gap-6 text-sm text-white lg:flex lg:px-4" />
       <div class="flex justify-end items-center w-40 flex-1 ml-auto gap-4 md:gap-6">
         <ProductSearch class="hidden sm:inline-flex max-w-80 w-[60%]" />
         <SearchTrigger />

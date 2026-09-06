@@ -14,10 +14,10 @@ watch([orderby, order], () => {
 <template>
   <div class="inline-flex ml-auto -space-x-px shadow-xs rounded-md isolate">
     <button
-      class="relative inline-flex items-center p-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:z-20"
+      class="relative inline-flex items-center p-2 text-sm font-medium bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:z-20"
       aria-label="Sort"
       @click="order = order === 'ASC' ? 'DESC' : 'ASC'">
-      <Icon name="ion:filter-outline" size="18" :class="order === 'ASC' ? 'rotate-180' : ''" class="transition-transform transform transform-origin-center" />
+      <Icon name="ion:filter-outline" size="18" :style="{ color: 'rgb(17 24 39) !important' }" :class="[order === 'ASC' ? 'rotate-180' : '', 'transition-transform transform transform-origin-center']" />
     </button>
     <select
       v-model="orderby"

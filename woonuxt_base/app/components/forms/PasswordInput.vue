@@ -38,7 +38,7 @@ const handleInputChanged = (e: Event) => {
       @input="handleInputChanged" />
     <button
       type="button"
-      class="absolute right-4 inline-flex cursor-pointer items-center text-gray-600 hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      class="absolute right-4 inline-flex cursor-pointer items-center text-gray-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       :aria-label="showPassword ? 'Hide password' : 'Show password'"
       @click="showPassword = !showPassword">
       <Icon :name="showPassword ? 'ion:eye-outline' : 'ion:eye-off-outline'" size="20" />
