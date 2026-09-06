@@ -1,5 +1,6 @@
 fragment Image on MediaItem {
-  sourceUrl
+  sourceUrl(size: LARGE)
+  srcSet
   altText
   title
   databaseId
