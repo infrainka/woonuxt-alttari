@@ -277,8 +277,7 @@ const disabledAddToCart = computed(() => {
   const canPurchaseWithCurrentStock = stockStatus.value === StockStatusEnum.InStock || stockStatus.value === StockStatusEnum.OnBackorder;
   const isInvalidType = !displayProduct.value;
   const isCartUpdating = isOptimisticCartMode.value ? false : isUpdatingCart.value || isAddingToCart.value;
-  const hasValidVariation = !isVariableProduct.value || !!activeVariation.value;
-  return !canPurchaseWithCurrentStock || isCartUpdating || !hasValidVariation || isInvalidType;
+  return !canPurchaseWithCurrentStock || isCartUpdating || isInvalidType;
 });
 
 const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : isUpdatingCart.value));

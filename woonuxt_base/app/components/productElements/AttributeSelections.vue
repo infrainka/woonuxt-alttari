@@ -325,10 +325,7 @@ watch(
           {{ attr.label || attr.name }}
           <span v-if="selections[attr.name || '']" class="text-gray-400">: {{ getSelectedName(attr, selections[attr.name || '']) }}</span>
         </div>
-        <div v-if="getSelectionHint(attr)" class="text-xs text-gray-400">
-          {{ getSelectionHint(attr) }}
-        </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 flex-wrap">
           <span v-for="(option, index) in (attr.options || []).filter((option): option is string => !!option)" :key="index">
             <label :for="`${option}_${index}`">
               <input
@@ -357,9 +354,6 @@ watch(
         <div class="text-sm">
           {{ $t('general.color') }}
           <span v-if="selections[attr.name || '']" class="text-gray-400">{{ getSelectedName(attr, selections[attr.name || '']) }}</span>
-        </div>
-        <div v-if="getSelectionHint(attr)" class="text-xs text-gray-400">
-          {{ getSelectionHint(attr) }}
         </div>
         <div class="flex gap-2">
           <span
@@ -393,9 +387,6 @@ watch(
           {{ attr.label || attr.name }}
           <span v-if="selections[attr.name || '']" class="text-gray-400">{{ getSelectedName(attr, selections[attr.name || '']) }}</span>
         </div>
-        <div v-if="getSelectionHint(attr)" class="text-xs text-gray-400">
-          {{ getSelectionHint(attr) }}
-        </div>
         <select
           :id="attr.name || ''"
           v-model="selections[attr.name || '']"
@@ -419,10 +410,7 @@ watch(
           {{ attr.label || attr.name }}
           <span v-if="selections[attr.name || '']" class="text-gray-400">: {{ getSelectedName(attr, selections[attr.name || '']) }}</span>
         </div>
-        <div v-if="getSelectionHint(attr)" class="text-xs text-gray-400">
-          {{ getSelectionHint(attr) }}
-        </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 flex-wrap">
           <span v-for="(term, index) in 'terms' in attr && attr.terms?.nodes ? attr.terms.nodes.filter((term) => term?.slug) : []" :key="term.slug || index">
             <label :for="`${term.slug}_${index}`">
               <input
@@ -453,7 +441,7 @@ watch(
 @reference "#tailwind";
 
 .radio-button {
-  @apply border-white  rounded-lg cursor-pointer bg-gray-50  border-2 text-sm text-center outline-2 outline-gray-100  py-1.5 px-3 transition-all text-gray-800  inline-block hover:outline-gray-500;
+  @apply border-white rounded-lg cursor-pointer bg-gray-50 border-2 text-xs sm:text-sm text-center outline-2 outline-gray-100 py-1 px-2 sm:py-1.5 sm:px-3 transition-all text-gray-800 inline-block hover:outline-gray-500;
 }
 
 .radio-button.is-disabled {

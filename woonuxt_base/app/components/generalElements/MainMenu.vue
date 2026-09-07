@@ -5,9 +5,9 @@ const route = useRoute();
 
 <template>
   <nav>
-    <NuxtLink class="transition-colors hover:text-primary" to="/">{{ $t('general.home') }}</NuxtLink>
-    <NuxtLink class="transition-colors hover:text-primary" to="/products">{{ $t('general.products') }}</NuxtLink>
-    <NuxtLink class="transition-colors hover:text-primary" to="/collections">{{ $t('general.collections') }}</NuxtLink>
-    <NuxtLink class="transition-colors hover:text-primary" to="/about">{{ $t('general.about') }}</NuxtLink>
+    <NuxtLink active-class="text-primary" class="transition-colors hover:text-primary" to="/">{{ $t('general.home') }}</NuxtLink>
+    <NuxtLink active-class="text-primary" class="transition-colors hover:text-primary" to="/products">{{ $t('general.products') }}</NuxtLink>
+    <NuxtLink active-class="text-primary" class="transition-colors hover:text-primary" to="/collections">{{ $t('general.collections') }}</NuxtLink>
+    <NuxtLink active-class="text-primary" class="transition-colors hover:text-primary" to="/about">{{ $t('general.about') }}</NuxtLink>
   </nav>
 </template>

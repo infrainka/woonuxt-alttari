@@ -12,10 +12,10 @@ const { cart, isCartMutating } = useCart();
 
     <AddCoupon class="my-8" />
 
-    <div class="grid gap-1 text-sm font-semibold text-gray-500">
+    <div class="grid gap-1 text-sm font-semibold text-black">
       <div class="flex justify-between">
         <span>{{ $t('shop.subtotal') }}</span>
-        <span class="text-gray-800 tabular-nums" v-html="cart.subtotal"></span>
+        <span class="text-black tabular-nums" v-html="cart.subtotal"></span>
       </div>
       <div class="flex justify-between">
         <span>{{ $t('general.shipping') }}</span>
@@ -29,7 +29,7 @@ const { cart, isCartMutating } = useCart();
       </Transition>
       <div class="flex justify-between mt-4 pt-2 border-t border-gray-200">
         <span class="text-base">{{ $t('shop.total') }}</span>
-        <span class="text-xl font-bold text-gray-900 tabular-nums" v-html="cart.total"></span>
+        <span class="text-xl font-bold text-black tabular-nums" v-html="cart.total"></span>
       </div>
     </div>
 

@@ -201,14 +201,6 @@ useSeoMeta({
             </div>
           </div>
 
-          <div v-if="!viewer" class="checkout-section">
-            <h1 class="text-2xl font-semibold leading-none text-gray-900">Guest checkout</h1>
-            <div class="flex justify-between items-center gap-4 mt-2" @click="navigateToLogin(route.fullPath)">
-              <p class="text-sm text-gray-600">Use guest checkout, or sign in to use your saved details.</p>
-              <Button type="button" class="ml-auto" size="sm" variant="outline"> Sign in </Button>
-            </div>
-          </div>
-
           <!-- Billing details -->
           <div v-if="customer?.billing" class="checkout-section">
             <div>
@@ -257,10 +249,7 @@ useSeoMeta({
                   :required="orderInput.createAccount" />
               </div>
             </div>
-            <div v-if="!viewer" class="flex items-center gap-2 mt-4">
-              <input id="creat-account" v-model="orderInput.createAccount" type="checkbox" name="creat-account" />
-              <label for="creat-account">Create an account?</label>
-            </div>
+
             <hr v-if="!viewer" class="flex-1 my-6 border-gray-300" />
 
             <div :class="viewer ? 'mt-4' : 'mt-6'">

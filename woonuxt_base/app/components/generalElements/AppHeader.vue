@@ -21,10 +21,10 @@ const { isShowingSearch } = useSearching();
       <!-- Socials -->
       <div class="flex items-center gap-4">
         <span>{{ $t('topbar.socials') }}</span>
-        <a href="#" aria-label="Instagram" class="flex items-center justify-center w-7 h-7 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
+        <a href="https://www.instagram.com/alttari.shop/" aria-label="Instagram" class="flex items-center justify-center w-7 h-7 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
           <Icon name="mdi:instagram" class="text-white text-md" />
         </a>
-        <a href="#" aria-label="TikTok" class="flex items-center justify-center w-7 h-7 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
+        <a href="https://www.tiktok.com/@alttari.shop" aria-label="TikTok" class="flex items-center justify-center w-7 h-7 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
           <Icon name="ic:baseline-tiktok" class="text-white text-md" />
         </a>
       </div>

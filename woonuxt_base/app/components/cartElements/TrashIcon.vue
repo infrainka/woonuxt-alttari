@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 512 512">
+  <svg class="alttari-dark-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 512 512">
     <path
       d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320"
       fill="none"
@@ -17,3 +17,12 @@
       stroke-width="32" />
   </svg>
 </template>
+
+<style scoped>
+/* Using #050505 evades auto-inverters while looking pitch black */
+.alttari-dark-icon,
+.alttari-dark-icon path {
+  color: #050505 !important;
+  stroke: #050505 !important;
+}
+</style>

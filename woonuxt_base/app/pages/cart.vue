@@ -14,7 +14,8 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="container my-16 min-h-150 items-center flex flex-col">
+  <!-- Added 'cart-panel' to the class list here -->
+  <main class="cart-panel container my-16 min-h-150 items-center flex flex-col">
     <ClientOnly>
       <div v-if="cart && !cart.isEmpty" class="grid lg:grid-cols-3 gap-8 lg:gap-12 w-full">
         <!-- Cart Items -->

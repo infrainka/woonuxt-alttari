@@ -6,7 +6,7 @@ const { cart, toggleCart, isCartMutating } = useCart();
   <div class="cart-panel fixed top-0 bottom-0 right-0 z-50 flex flex-col w-11/12 max-w-lg overflow-x-hidden bg-white shadow-lg">
     <Icon
       name="ion:close-outline"
-      class="absolute p-1 rounded-lg shadow-lg top-6 left-6 md:left-8 cursor-pointer hover:bg-gray-100 text-gray-900"
+      class="absolute p-1 rounded-lg shadow-lg top-6 left-6 md:left-8 cursor-pointer hover:bg-gray-100 text-black"
       size="34"
       @click="toggleCart(false)" />
 
