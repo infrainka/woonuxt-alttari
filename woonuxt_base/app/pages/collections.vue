@@ -8,14 +8,12 @@ type Collection = {
   products: Product[];
 };
 
-// 1. Fetch products as usual
-const { data: productsData } = await useAsyncGql('getProducts');
-const products = (productsData.value?.products?.nodes || []) as Product[];
+const [{ data: productsData }, { data: collectionsData }] = await Promise.all([
+  useAsyncGql('getProducts'),
+  useAsyncGql('getCollections', { tax: ['PAKOKOELMAT' as any] }),
+]);
 
-// 2. Fetch collections using a runtime variable to bypass local validation
-const { data: collectionsData } = await useAsyncGql('getCollections', {
-  tax: ['PAKOKOELMAT' as any]
-});
+const products = (productsData.value?.products?.nodes || []) as Product[];
 const rawCollections = collectionsData.value?.terms?.nodes || [];
 
 const collections: Collection[] = [];

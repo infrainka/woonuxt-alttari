@@ -1,5 +1,6 @@
 <script setup>
-const { data } = await useFetch('https://alttari.shop/graphql', {
+// Changed from await useFetch to useLazyFetch (no await needed)
+const { data, pending } = useLazyFetch('https://alttari.shop/graphql', {
   method: 'POST',
   body: {
     query: `
@@ -13,7 +14,8 @@ const { data } = await useFetch('https://alttari.shop/graphql', {
   }
 });
 
-const faqs = data.value?.data?.bivFaqItems || [];
+// Use a computed property so it updates reactively when data arrives
+const faqs = computed(() => data.value?.data?.bivFaqItems || []);
 </script>
 
 <template>
@@ -36,9 +38,9 @@ const faqs = data.value?.data?.bivFaqItems || [];
     </details>
 
     <!-- Fallback state styled to match -->
-    <div v-if="faqs.length === 0" class="text-center text-white bg-black p-4 border border-red-600 rounded-lg">
-      Ladataan... (Loading...)
-    </div>
+<div v-if="pending" class="text-center text-white bg-black p-4 border border-red-600 rounded-lg">
+  Ladataan... (Loading...)
+</div>
   </div>
 </template>
 

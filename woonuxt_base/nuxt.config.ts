@@ -148,6 +148,8 @@ export default defineNuxtConfig({
       '/product-category/**': { isr: catalogIsrTtl },
       '/products': { isr: catalogIsrTtl },
       '/products/**': { isr: catalogIsrTtl },
+      '/collections': { isr: catalogIsrTtl },
+      '/about': { isr: catalogIsrTtl },
     },
   },
 
