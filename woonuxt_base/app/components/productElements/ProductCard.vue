@@ -16,7 +16,7 @@ type ProductImage = {
   key: string;
 };
 
-const imgWidth = 280;
+const imgWidth = 560;
 const imgHeight = Math.round(imgWidth * 1.125);
 const isFirstProduct = computed(() => props.index === 0);
 
@@ -185,7 +185,7 @@ onMounted(() => {
               :title="image.title"
               :loading="slideIndex === 0 && isFirstProduct ? 'eager' : 'lazy'"
               :preload="slideIndex === 0 && isFirstProduct ? { fetchPriority: 'high' } : false"
-              :sizes="`sm:${imgWidth / 2}px md:${imgWidth}px`"
+              :sizes="`sm:100vw md:50vw lg:350px xl:450px`"
               :img-attrs="{
                 class: 'object-cover object-top w-full h-full rounded-lg',
                 fetchpriority: slideIndex === 0 && isFirstProduct ? 'high' : undefined,

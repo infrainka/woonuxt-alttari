@@ -44,7 +44,7 @@ for (const term of rawCollections) {
 }
 
 useHead({
-  title: 'Kokoelmat - Alttari',
+  title: 'Kokoelmat',
   meta: [{ name: 'description', content: 'Explore our product collections' }],
 });
 </script>

@@ -28,7 +28,7 @@ watch(
 );
 
 useHead({
-  title: `Products`,
+  title: `Tuotteet`,
   meta: [{ name: 'description', content: 'Discover our products' }],
 });
 </script>

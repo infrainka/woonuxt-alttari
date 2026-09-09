@@ -6,7 +6,7 @@ defineProps({
   previewImage: { type: String, default: '' },
 });
 
-const imgWidth = 220;
+const imgWidth = 440;
 const imgHeight = Math.round(imgWidth * 1.125);
 </script>
 
@@ -22,7 +22,7 @@ const imgHeight = Math.round(imgWidth * 1.125);
       :alt="node.image?.altText || node.name"
       :title="node.image?.title || node.name"
       :loading="imageLoading"
-      :sizes="`sm:${imgWidth / 2}px md:${imgWidth}px`"
+      sizes="sm:50vw md:33vw lg:250px xl:350px"
       :img-attrs="{ class: 'absolute inset-0 object-cover w-full h-full' }" />
     <div class="absolute inset-x-0 bottom-0 opacity-50 bg-linear-to-t from-black to-transparent h-1/2"></div>
     <span class="relative z-10 mt-auto mb-2 text-sm font-semibold text-white capitalize md:text-base md:mb-4" v-html="node.name"></span>
