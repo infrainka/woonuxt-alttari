@@ -1,0 +1,15 @@
+query getRelatedProducts($ids: [Int]) {
+  products(first: 4, where: { include: $ids }) {
+    nodes {
+      name
+      slug
+      id
+      databaseId
+      type
+      averageRating
+      reviewCount
+      ...SimpleProduct
+      ...ExternalProduct
+    }
+  }
+}

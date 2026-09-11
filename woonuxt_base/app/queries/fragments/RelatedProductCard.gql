@@ -1,0 +1,54 @@
+fragment RelatedSimpleProduct on SimpleProduct {
+  name
+  slug
+  databaseId
+  price
+  rawPrice: price(format: RAW)
+  regularPrice
+  salePrice
+  onSale
+  stockStatus
+  averageRating
+  reviewCount
+  image {
+    sourceUrl
+    altText
+    title
+    productCardSourceUrl: sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+  }
+}
+
+fragment RelatedVariableProduct on VariableProduct {
+  name
+  slug
+  databaseId
+  price
+  rawPrice: price(format: RAW)
+  regularPrice
+  salePrice
+  onSale
+  stockStatus
+  averageRating
+  reviewCount
+  image {
+    sourceUrl
+    altText
+    title
+    productCardSourceUrl: sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+  }
+}
+
+fragment RelatedExternalProduct on ExternalProduct {
+  name
+  slug
+  databaseId
+  externalUrl
+  buttonText
+  ...ProductPricing
+  image {
+    sourceUrl
+    altText
+    title
+    productCardSourceUrl: sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+  }
+}

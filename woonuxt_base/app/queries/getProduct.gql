@@ -23,22 +23,12 @@ query getProduct($slug: ID!, $frontEndUrl: String = "") {
     ...ExternalProduct
     related(first: 5) {
       nodes {
-        ...SimpleProduct
-        ...VariableProduct
-        ...ExternalProduct
-      }
-    }
-    reviews(first: 100) {
-      averageRating
-      edges {
-        rating
-        node {
-          ...Comment
-        }
+        databaseId
       }
     }
   }
 }
+
 fragment ProductWithAttributes on ProductWithAttributes {
   attributes {
     nodes {
@@ -46,6 +36,7 @@ fragment ProductWithAttributes on ProductWithAttributes {
     }
   }
 }
+
 fragment ProductAttribute on ProductAttribute {
   variation
   name

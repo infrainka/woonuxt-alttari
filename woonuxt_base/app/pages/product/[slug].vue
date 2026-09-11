@@ -17,6 +17,9 @@ const activeVariation = ref<Variation | null>(null);
 const variation = ref<VariationAttribute[]>([]);
 const attrValues = ref<ProductAttributeInput[]>([]);
 
+// NEW: holds fully-resolved related products, fetched separately after initial render
+const relatedProducts = ref<{ nodes: any[] } | null>(null);
+
 const productLoadError = error.value ? getErrorMessage(error.value) || `We couldn't load "${slug}" right now. Please refresh and try again.` : t('shop.productNotFound');
 
 const normalizeMatchToken = (value?: string | null): string =>
@@ -262,8 +265,23 @@ const refreshStockStatus = async (): Promise<void> => {
   }
 };
 
+// NEW: fetch full related-product cards after initial render, using the
+// lightweight IDs already returned by the main getProduct query
+const fetchRelatedProducts = async (): Promise<void> => {
+  const ids = product.value?.related?.nodes?.map((n) => n.databaseId).filter(Boolean) ?? [];
+  if (!ids.length) return;
+  try {
+    const { products } = await gql.getRelatedProducts({ ids });
+    relatedProducts.value = products ?? null;
+  } catch (error: any) {
+    const errorMessage = error?.gqlErrors?.[0]?.message;
+    if (errorMessage) console.error(errorMessage);
+  }
+};
+
 onMounted(() => {
   if (!shouldSkipStockRefresh.value) void refreshStockStatus();
+  if (storeSettings.showRelatedProducts) void fetchRelatedProducts(); // NEW
 });
 
 const stockStatus = computed(() => {
@@ -332,7 +350,7 @@ const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : is
             </div>
           </div>
 
-          <div class="mb-8 font-light prose" v-html="product.shortDescription || product.description"></div>
+          <div class="mb-8" v-html="product.shortDescription || product.description"></div>
 
           <hr class="border-gray-300" />
 
@@ -357,6 +375,7 @@ const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : is
                 {{ $t('shop.addToCart') }}
               </Button>
             </div>
+
             <a
               v-if="externalProduct?.externalUrl"
               :href="externalProduct.externalUrl"
@@ -391,15 +410,17 @@ const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : is
           </div>
         </div>
       </div>
-      <div v-if="product.description || product.reviews" class="my-32">
+      <!-- CHANGED: was v-if="product.description || product.reviews" -->
+      <div v-if="product.description || storeSettings.showReviews" class="my-32">
         <ProductTabs :product />
 
         <!-- Hook: After product tabs -->
         <HookOutlet name="product.tabs.after" :ctx="{ product }" as="div" />
       </div>
-      <div v-if="product.related && storeSettings.showRelatedProducts" class="my-32">
+      <!-- CHANGED: was v-if="product.related && storeSettings.showRelatedProducts", :products="product.related.nodes" -->
+      <div v-if="relatedProducts?.nodes?.length && storeSettings.showRelatedProducts" class="my-32">
         <div class="mb-4 text-xl font-semibold">{{ $t('shop.youMayLike') }}</div>
-        <LazyProductRow :products="product.related.nodes" class="grid-cols-2 md:grid-cols-4 lg:grid-cols-5" />
+        <LazyProductRow :products="relatedProducts.nodes" class="grid-cols-2 md:grid-cols-4 lg:grid-cols-5" />
       </div>
     </div>
     <div v-else class="my-24 text-center text-gray-500">
@@ -423,7 +444,11 @@ input[type='number']::-webkit-outer-spin-button {
   color-scheme: dark;
 }
 
-.prose {
+/* Replace the old .prose rule with this */
+:deep(.prose),
+:deep(.prose p),
+:deep(.prose strong),
+:deep(.prose span) {
   color: white !important;
 }
 </style>

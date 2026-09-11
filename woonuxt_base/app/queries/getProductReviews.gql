@@ -1,0 +1,17 @@
+query getProductReviews($databaseId: ID!, $first: Int = 10, $after: String) {
+  product(id: $databaseId, idType: DATABASE_ID) {
+    reviews(first: $first, after: $after) {
+      averageRating
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        rating
+        node {
+          ...Comment
+        }
+      }
+    }
+  }
+}

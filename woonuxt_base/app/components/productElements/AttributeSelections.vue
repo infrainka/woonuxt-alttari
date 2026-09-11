@@ -441,7 +441,7 @@ watch(
 @reference "#tailwind";
 
 .radio-button {
-  @apply border-white rounded-lg cursor-pointer bg-gray-50 border-2 text-xs sm:text-sm text-center outline-2 outline-gray-100 py-1 px-2 sm:py-1.5 sm:px-3 transition-all text-gray-800 inline-block hover:outline-gray-500;
+  @apply border-white rounded-lg cursor-pointer bg-gray-50 border-2 text-xs sm:text-sm text-center outline-2 outline-gray-100 py-1 px-5 sm:py-1.5 sm:px-3 transition-all text-gray-800 inline-block hover:outline-gray-500;
 }
 
 .radio-button.is-disabled {
@@ -487,6 +487,6 @@ watch(
 }
 
 .attribute-selections input[type='radio']:checked ~ span {
-  @apply outline-2 outline-gray-500;
+  @apply outline-2 outline-red-700;
 }
 </style>
