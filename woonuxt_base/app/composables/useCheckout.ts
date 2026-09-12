@@ -33,6 +33,7 @@ export function useCheckout() {
 
   const isProcessingOrder = useState<boolean>('isProcessingOrder', () => false);
   const checkoutError = ref<string | null>(null);
+  const lastCalculatedLocation = useState<string>('lastCalculatedLocation', () => '');
 
   // Helper function to build checkout payload
 const buildCheckoutPayload = (isPaid = false): CheckoutInput => {
@@ -133,17 +134,33 @@ const buildCheckoutPayload = (isPaid = false): CheckoutInput => {
     }
   };
 
-  // if Country or State are changed, calculate the shipping rates again
 async function updateShippingLocation() {
+    // 1. Check if the postal code is ready before doing anything
+    const checkBilling = customer.value?.billing;
+    const checkShipping = orderInput.value.shipToDifferentAddress ? customer.value?.shipping : customer.value?.billing;
+    
+    const currentPostcode = checkShipping?.postcode?.trim() || '';
+    const currentCountry = checkShipping?.country || '';
+    const locationHash = `${currentCountry}-${currentPostcode}`;
+
+    // Abort if the postal code is less than 5 characters (Finnish standard), 
+    // or if we already calculated the shipping for this exact postal code.
+    if (currentPostcode.length < 5 || lastCalculatedLocation.value === locationHash) {
+      return;
+    }
+
+    // Mark this postal code as calculated so we don't spam the server
+    lastCalculatedLocation.value = locationHash;
+
     isUpdatingCart.value = true;
 
-    // 1. Preserve local data
+    // 2. Preserve local data
     const localBilling = { ...customer.value?.billing };
     const localShipping = { ...customer.value?.shipping };
 
     try {
-      // 2. Define the BILLING function (Includes email)
-const pickBillingLocation = (address: Address | null | undefined) => {
+      //  Define the billing function (Includes email)
+      const pickBillingLocation = (address: Address | null | undefined) => {
         if (!address) return {};
         const { address1, address2, city, country, postcode, state, email, firstName, lastName, phone } = address;
         return { 
@@ -160,7 +177,7 @@ const pickBillingLocation = (address: Address | null | undefined) => {
         };
       };
 
-      // 3. Define the SHIPPING function (No email, forces null instead of undefined)
+      // 4. Define the SHIPPING function (No email)
       const pickShippingLocation = (address: Address | null | undefined) => {
         if (!address) return {};
         const { address1, address2, city, country, postcode, state, firstName, lastName, phone } = address;
@@ -185,15 +202,15 @@ const pickBillingLocation = (address: Address | null | undefined) => {
         }
       }
 
-      // 4. Apply the correct logic mapping
+      // 5. Apply the correct logic mapping
       const billingSource = customer.value?.billing;
       const shippingSource = orderInput.value.shipToDifferentAddress ? customer.value?.shipping : customer.value?.billing;
 
-      // 5. Call the newly defined functions
+      // 6. Call the newly defined functions
       const shipping = pickShippingLocation(shippingSource);
       const billing = pickBillingLocation(billingSource);
 
-const { updateCustomer } = await gql.UpdateCustomer({
+      const { updateCustomer } = await gql.UpdateCustomer({
         input: {
           shipping: shipping as any,
           billing: billing as any,
@@ -206,8 +223,7 @@ const { updateCustomer } = await gql.UpdateCustomer({
 
       await refreshCart();
 
-      // 6. Restore preserved data
-      // 6. Restore preserved data
+      // 7. Restore preserved data
       if (customer.value) {
         // @ts-ignore - Bypass strict null checks for local UI restoration
         customer.value.billing = { ...(customer.value.billing || {}), ...localBilling };
@@ -216,6 +232,8 @@ const { updateCustomer } = await gql.UpdateCustomer({
       }
     } catch (error) {
       console.error('Error updating shipping location:', error);
+      // Revert the hash if it failed, so they can try again
+      lastCalculatedLocation.value = '';
     } finally {
       isUpdatingCart.value = false;
     }
