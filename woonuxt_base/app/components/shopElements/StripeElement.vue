@@ -68,9 +68,15 @@ const stripeAppearance = computed<Appearance>(() => {
   };
 });
 
-const resetStripeElements = () => {
-  if (paymentElement) {
-    paymentElement.unmount();
+const resetStripeElements = (shouldUnmount = true) => {
+  if (paymentElement && shouldUnmount) {
+    // Stripe may have already auto-destroyed the element (e.g. its DOM node was removed), so an
+    // explicit unmount() here can legitimately throw - it's safe to ignore.
+    try {
+      paymentElement.unmount();
+    } catch {
+      /* already destroyed by Stripe */
+    }
   }
   paymentElement = null;
   elements = null;
@@ -159,7 +165,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  resetStripeElements();
+  // Vue is already removing #payment-element, which makes Stripe auto-destroy it - don't unmount again.
+  resetStripeElements(false);
 });
 </script>
 

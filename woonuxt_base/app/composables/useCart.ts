@@ -362,14 +362,14 @@ export function useCart() {
             : null;
 
           if (!sessionCookie) {
+            // Only wipe the local cart when we've confirmed there's no session left to recover it from.
             updateCustomer({ billing: {}, shipping: {} } as Customer);
+            resetInitialState();
           }
-        }
-
-        if (!isAuthError) {
+        } else {
+          // Transient/network/server errors shouldn't clear an existing local cart - just report and keep state.
           getErrorMessage(error);
         }
-        resetInitialState();
         return false;
       } finally {
         isUpdatingCart.value = false;
