@@ -17,7 +17,7 @@
       
       <h2 class="text-lg font-bold md:mb-4 lg:text-3xl"></h2>
       
-      <div class="max-w-sm mb-8 text-md font-light lg:max-w-md text-balance">
+      <div class="max-w-sm mb-8 text-md font-bold [text-shadow:_0_2px_4px_black,_0_0_4px_black] lg:max-w-md text-balance">
         <p>{{ $t('hero.description') }}</p>
       </div>
       

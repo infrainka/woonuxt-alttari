@@ -75,37 +75,44 @@
   }
 
   .cart-panel .text-black,
-  .checkout-container .text-black {
+  .checkout-container .text-black,
+  .order-receipt-container .text-black {
     color: black !important;
   }
 
   .cart-panel .text-gray-900,
-  .checkout-container .text-gray-900 {
+  .checkout-container .text-gray-900,
+  .order-receipt-container .text-gray-900 {
     color: #111827 !important;
   }
 
   .cart-panel .text-gray-800,
-  .checkout-container .text-gray-800 {
+  .checkout-container .text-gray-800,
+  .order-receipt-container .text-gray-800 {
     color: #1f2937 !important;
   }
 
     .cart-panel .text-gray-700,
-  .checkout-container .text-gray-800 {
+  .checkout-container .text-gray-800,
+  .order-receipt-container .text-gray-700 {
     color: #1f2937 !important;
   }
 
   .cart-panel .text-gray-600,
-  .checkout-container .text-gray-600 {
+  .checkout-container .text-gray-600,
+  .order-receipt-container .text-gray-600 {
     color: #4b5563 !important;
   }
 
   .cart-panel .text-gray-500,
-  .checkout-container .text-gray-500 {
+  .checkout-container .text-gray-500,
+  .order-receipt-container .text-gray-500 {
     color: #6b7280 !important;
   }
 
   .cart-panel .text-gray-400,
-  .checkout-container .text-gray-400 {
+  .checkout-container .text-gray-400,
+  .order-receipt-container .text-gray-400 {
     color: #9ca3af !important;
   }
 }
