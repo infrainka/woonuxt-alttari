@@ -4,9 +4,6 @@ import type { CheckoutMutation } from '#gql/default';
 
 type CheckoutOrder = NonNullable<CheckoutMutation['checkout']>;
 
-// Guards against out-of-order responses when multiple address fields change in quick succession.
-let shippingLocationRequestId = 0;
-
 export function useCheckout() {
   const nuxtApp = useNuxtApp();
   const { customer, loginUser } = useAuth();
@@ -40,9 +37,10 @@ export function useCheckout() {
   // Helper function to build checkout payload
   const buildCheckoutPayload = (isPaid = false): CheckoutInput => {
     const { username, password, shipToDifferentAddress } = orderInput.value;
-    // Billing must always come from the live form fields (e.g. email); shipping only diverges when the user opts in.
-    const billing = customer.value?.billing;
-    const shipping = shipToDifferentAddress ? customer.value?.shipping : customer.value?.billing;
+    const shippingSource = customer.value?.shipping ?? customer.value?.billing;
+    const billingSource = shipToDifferentAddress ? customer.value?.billing : shippingSource;
+    const billing = billingSource;
+    const shipping = shipToDifferentAddress ? shippingSource : billingSource;
     const paymentMethodId = resolvePaymentMethodId(orderInput.value.paymentMethod);
 
     const payload: CheckoutInput = {
@@ -71,17 +69,6 @@ export function useCheckout() {
   const isPayPalPayment = (): boolean => {
     const paymentId = resolvePaymentMethodId(orderInput.value.paymentMethod);
     return paymentId === 'paypal' || paymentId === 'ppcp-gateway';
-  };
-
-  // WooCommerce sets `redirect` to the thank-you page for standard gateways, but hosted/redirect
-  // gateways (Paytrail, bank redirects, etc.) point it at an external payment page instead.
-  const isExternalGatewayRedirect = (redirectUrl: string): boolean => {
-    if (!import.meta.client) return false;
-    try {
-      return new URL(redirectUrl, window.location.origin).origin !== window.location.origin;
-    } catch {
-      return false;
-    }
   };
 
   const createOrderFallbackKey = (checkoutOrder: CheckoutOrder['order'], orderId: string, orderKey: string): string => {
@@ -147,7 +134,6 @@ export function useCheckout() {
 
   // if Country or State are changed, calculate the shipping rates again
   async function updateShippingLocation() {
-    const requestId = ++shippingLocationRequestId;
     isUpdatingCart.value = true;
 
     try {
@@ -178,10 +164,6 @@ export function useCheckout() {
         } as UpdateCustomerInput,
       });
 
-      // A newer edit already started while this request was in flight - let it win instead of
-      // clobbering more recent local changes with this stale response.
-      if (requestId !== shippingLocationRequestId) return;
-
       if (!updateCustomer) {
         console.warn('[updateShippingLocation] updateCustomer returned null/false');
       }
@@ -190,7 +172,7 @@ export function useCheckout() {
     } catch (error) {
       console.error('Error updating shipping location:', error);
     } finally {
-      if (requestId === shippingLocationRequestId) isUpdatingCart.value = false;
+      isUpdatingCart.value = false;
     }
   }
 
@@ -248,11 +230,6 @@ export function useCheckout() {
       // Handle PayPal redirect if needed
       if (checkout?.redirect && isPayPalPayment()) {
         await handlePayPalRedirect(checkout, orderId, orderKey, fallbackOrderKey);
-      } else if (checkout?.redirect && import.meta.client && isExternalGatewayRedirect(checkout.redirect)) {
-        // Other hosted/redirect gateways (e.g. Paytrail) must send the shopper to their payment page.
-        await finalizeCheckout(checkout);
-        window.location.href = checkout.redirect;
-        return checkout;
       } else {
         // Standard redirect to order received page
         router.push(`/checkout/order-received/${orderId}/?key=${orderKey}${fallbackOrderQuery}`);
