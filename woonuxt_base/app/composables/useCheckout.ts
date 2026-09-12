@@ -35,12 +35,14 @@ export function useCheckout() {
   const checkoutError = ref<string | null>(null);
 
   // Helper function to build checkout payload
-  const buildCheckoutPayload = (isPaid = false): CheckoutInput => {
+const buildCheckoutPayload = (isPaid = false): CheckoutInput => {
     const { username, password, shipToDifferentAddress } = orderInput.value;
-    const shippingSource = customer.value?.shipping ?? customer.value?.billing;
-    const billingSource = shipToDifferentAddress ? customer.value?.billing : shippingSource;
-    const billing = billingSource;
-    const shipping = shipToDifferentAddress ? shippingSource : billingSource;
+    
+    // FIX: Always use billing for the billing payload. 
+    // Only use shipping for the shipping payload if the toggle is checked.
+    const billing = customer.value?.billing;
+    const shipping = shipToDifferentAddress ? customer.value?.shipping : customer.value?.billing;
+    
     const paymentMethodId = resolvePaymentMethodId(orderInput.value.paymentMethod);
 
     const payload: CheckoutInput = {
@@ -55,7 +57,6 @@ export function useCheckout() {
       isPaid,
     };
 
-    // Handle account creation
     if (orderInput.value.createAccount) {
       payload.account = { username, password } as CreateAccountInput;
     } else {
@@ -133,14 +134,47 @@ export function useCheckout() {
   };
 
   // if Country or State are changed, calculate the shipping rates again
-  async function updateShippingLocation() {
+async function updateShippingLocation() {
     isUpdatingCart.value = true;
 
+    // 1. Preserve local data
+    const localBilling = { ...customer.value?.billing };
+    const localShipping = { ...customer.value?.shipping };
+
     try {
-      const pickLocation = (address: Address | null | undefined): Partial<Address> => {
+      // 2. Define the BILLING function (Includes email)
+const pickBillingLocation = (address: Address | null | undefined) => {
         if (!address) return {};
-        const { address1, address2, city, country, postcode, state } = address;
-        return { address1, address2, city, country, postcode, state };
+        const { address1, address2, city, country, postcode, state, email, firstName, lastName, phone } = address;
+        return { 
+          address1: address1 ?? null, 
+          address2: address2 ?? null, 
+          city: city ?? null, 
+          country: country ?? null, 
+          postcode: postcode ?? null, 
+          state: state ?? null, 
+          email: email ?? null, 
+          firstName: firstName ?? null, 
+          lastName: lastName ?? null, 
+          phone: phone ?? null 
+        };
+      };
+
+      // 3. Define the SHIPPING function (No email, forces null instead of undefined)
+      const pickShippingLocation = (address: Address | null | undefined) => {
+        if (!address) return {};
+        const { address1, address2, city, country, postcode, state, firstName, lastName, phone } = address;
+        return { 
+          address1: address1 ?? null, 
+          address2: address2 ?? null, 
+          city: city ?? null, 
+          country: country ?? null, 
+          postcode: postcode ?? null, 
+          state: state ?? null, 
+          firstName: firstName ?? null, 
+          lastName: lastName ?? null, 
+          phone: phone ?? null 
+        };
       };
 
       if (!orderInput.value.shipToDifferentAddress && customer.value?.billing) {
@@ -151,17 +185,19 @@ export function useCheckout() {
         }
       }
 
-      const shippingSource = customer.value?.shipping ?? customer.value?.billing;
-      const billingSource = orderInput.value.shipToDifferentAddress ? customer.value?.billing : shippingSource;
+      // 4. Apply the correct logic mapping
+      const billingSource = customer.value?.billing;
+      const shippingSource = orderInput.value.shipToDifferentAddress ? customer.value?.shipping : customer.value?.billing;
 
-      const shipping = pickLocation(shippingSource);
-      const billing = pickLocation(billingSource);
+      // 5. Call the newly defined functions
+      const shipping = pickShippingLocation(shippingSource);
+      const billing = pickBillingLocation(billingSource);
 
-      const { updateCustomer } = await gql.UpdateCustomer({
+const { updateCustomer } = await gql.UpdateCustomer({
         input: {
-          shipping,
-          billing,
-        } as UpdateCustomerInput,
+          shipping: shipping as any,
+          billing: billing as any,
+        },
       });
 
       if (!updateCustomer) {
@@ -169,6 +205,15 @@ export function useCheckout() {
       }
 
       await refreshCart();
+
+      // 6. Restore preserved data
+      // 6. Restore preserved data
+      if (customer.value) {
+        // @ts-ignore - Bypass strict null checks for local UI restoration
+        customer.value.billing = { ...(customer.value.billing || {}), ...localBilling };
+        // @ts-ignore - Bypass strict null checks for local UI restoration
+        customer.value.shipping = { ...(customer.value.shipping || {}), ...localShipping };
+      }
     } catch (error) {
       console.error('Error updating shipping location:', error);
     } finally {
