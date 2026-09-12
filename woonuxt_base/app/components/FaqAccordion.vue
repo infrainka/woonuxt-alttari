@@ -1,6 +1,6 @@
 <script setup>
 // Changed from await useFetch to useLazyFetch (no await needed)
-const { data, pending } = useLazyFetch('https://alttari.shop/graphql', {
+const { data, pending } = useLazyFetch('https://wp.alttari.shop/graphql', {
   method: 'POST',
   body: {
     query: `
