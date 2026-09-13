@@ -78,18 +78,14 @@ const resetStripeElements = () => {
   emit('updateElement', null);
 };
 
-const { locale } = useI18n();
 
 const createStripeElements = async () => {
   resetStripeElements();
-
-  const stripeLocale = locale.value.split('-')[0];
 
   if (props.clientSecret) {
     const elementsOptions: any = {
       clientSecret: props.clientSecret,
       appearance: stripeAppearance.value,
-      locale: stripeLocale,
     };
     elements = props.stripe.elements(elementsOptions);
     elementsMode = 'intent';
@@ -101,7 +97,6 @@ const createStripeElements = async () => {
       amount: normalizedAmount.value ?? 0,
       setupFutureUsage: normalizedSetupFutureUsage.value,
       appearance: stripeAppearance.value,
-      locale: stripeLocale,
     });
     elementsMode = 'deferred';
   }
