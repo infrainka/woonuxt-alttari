@@ -44,7 +44,8 @@ const saveForFuture = computed({
         type="checkbox"
         name="save-payment-method"
         class="mt-0.5 h-4 w-4 rounded-sm border-gray-300 bg-white text-primary focus:ring-3 focus:ring-primary" />
-      <label for="save-payment-method" class="text-sm font-medium text-gray-700"> Save payment information to my account for future purchases. </label>
-    </div>
+<label for="save-payment-method" class="text-sm font-medium text-gray-700"> 
+        {{ $t('billing.savePaymentInfo') }}
+      </label>    </div>
   </div>
 </template>

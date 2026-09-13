@@ -178,7 +178,8 @@
     "cashOnDelivery": "Postiennakko",
     "differentAddress": "Toimitus eri osoitteeseen?",
     "useSameAddress": "Käytä samaa osoitetta laskutukseen",
-    "noAddressProvided": "Osoitetta ei ole vielä annettu"
+    "noAddressProvided": "Osoitetta ei ole vielä annettu",
+    "savePaymentInfo": "Tallenna maksutiedot tililleni tulevia ostoksia varten."
   },
   "error": {
     "invalidUsername": "Tällä käyttäjätunnuksella ei löytynyt tiliä. Rekisteröi uusi tili.",

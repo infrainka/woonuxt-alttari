@@ -210,7 +210,7 @@ useSeoMeta({
             </div>
 
             <div v-if="!viewer" class="w-full mt-4">
-              <label for="email">{{ $t('billing.email') }}</label>
+              <label for="email">{{ $t('billing.email') }} <span class="text-red-500">*</span></label>
               <input
                 v-model="customer.billing.email"
                 placeholder="johndoe@email.com"

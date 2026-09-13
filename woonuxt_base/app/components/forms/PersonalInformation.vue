@@ -47,7 +47,7 @@
 
         <div class="w-full space-y-2">
           <label for="email" class="block text-sm font-medium text-gray-700">
-            {{ $t('billing.email') }}
+            {{ $t('billing.email') }} <span class="text-red-500">*</span>
           </label>
           <input
             id="email"

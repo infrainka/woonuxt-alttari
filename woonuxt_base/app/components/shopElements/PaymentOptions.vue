@@ -11,8 +11,11 @@ const paymentMethod = toRef(props, 'modelValue');
 const emits = defineEmits<{
   'update:modelValue': [gateway: PaymentGateway];
 }>();
-const gateways = computed<PaymentGateway[]>(() => props.paymentGateways?.nodes || []);
-const { getGateway } = usePaymentGateways();
+const gateways = computed<PaymentGateway[]>(() => {
+  const allGateways = props.paymentGateways?.nodes || [];
+  // Only keep gateways where the ID includes 'stripe'
+  return allGateways.filter((gateway) => gateway.id === 'stripe' || gateway.id.includes('stripe'));
+});
 
 const selectedGatewayId = computed<string>(() => {
   const value = paymentMethod.value as PaymentGateway | string | null | undefined;
@@ -24,13 +27,17 @@ const defaultGatewayOption = (gateway: PaymentGateway): PaymentGatewayOption => 
   const pluginIcon = plugin?.icon;
   const icon = typeof pluginIcon === 'function' ? pluginIcon(gateway) : pluginIcon || gateway.icon || null;
 
+  const isStripe = gateway.id === 'stripe' || gateway.id.includes('stripe');
+
   return {
     id: gateway.id,
     gateway,
-    title: gateway.title || plugin?.name || 'Payment Method',
+    // Force the custom Finnish title for Stripe
+    title: isStripe ? 'Stripe: Kortti/mobiililompakko' : gateway.title || plugin?.name || 'Payment Method',
     description: gateway.description,
     icon,
-    iconName: plugin?.iconName || 'ion:cash-outline',
+    // Change the fallback icon to a card instead of cash for Stripe
+    iconName: isStripe ? 'ion:card-outline' : plugin?.iconName || 'ion:cash-outline',
   };
 };
 

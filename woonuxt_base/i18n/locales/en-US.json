@@ -176,7 +176,8 @@
     "cashOnDelivery": "Cash on Delivery",
     "differentAddress": "Ship to a different address?",
     "useSameAddress": "Use same address for billing",
-    "noAddressProvided": "No address provided yet"
+    "noAddressProvided": "No address provided yet",
+    "savePaymentInfo": "Save payment information to my account for future purchases."
   },
   "error": {
     "invalidUsername": "No account found with that username. Sign up for a new account.",

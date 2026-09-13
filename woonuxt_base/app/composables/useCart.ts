@@ -369,7 +369,7 @@ export function useCart() {
         if (!isAuthError) {
           getErrorMessage(error);
         }
-        resetInitialState();
+        //resetInitialState();
         return false;
       } finally {
         isUpdatingCart.value = false;

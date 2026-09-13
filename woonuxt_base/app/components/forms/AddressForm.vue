@@ -18,7 +18,7 @@ const autocomplete = (token: string) => `section-${props.addressType} ${props.ad
   <div class="@container w-full">
     <div class="grid w-full gap-4 @lg:grid-cols-2">
       <div class="w-full">
-        <label :for="fieldId('first-name')">{{ $t('billing.firstName') }}</label>
+        <label :for="fieldId('first-name')">{{ $t('billing.firstName') }} <span class="text-red-500">*</span></label>
         <input
           :id="fieldId('first-name')"
           v-model="address.firstName"
@@ -31,7 +31,7 @@ const autocomplete = (token: string) => `section-${props.addressType} ${props.ad
       </div>
 
       <div class="w-full">
-        <label :for="fieldId('last-name')">{{ $t('billing.lastName') }}</label>
+        <label :for="fieldId('last-name')">{{ $t('billing.lastName') }} <span class="text-red-500">*</span></label>
         <input
           :id="fieldId('last-name')"
           v-model="address.lastName"
@@ -45,7 +45,7 @@ const autocomplete = (token: string) => `section-${props.addressType} ${props.ad
 
       <template v-if="showAddressFields">
         <div class="w-full col-span-full">
-          <label :for="fieldId('address1')">{{ $t('billing.address1') }}</label>
+          <label :for="fieldId('address1')">{{ $t('billing.address1') }} <span class="text-red-500">*</span></label>
           <input
             :id="fieldId('address1')"
             v-model="address.address1"
@@ -72,7 +72,7 @@ const autocomplete = (token: string) => `section-${props.addressType} ${props.ad
         </div>
 
         <div class="w-full">
-          <label :for="fieldId('city')">{{ $t('billing.city') }}</label>
+          <label :for="fieldId('city')">{{ $t('billing.city') }} <span class="text-red-500">*</span></label>
           <input
             :id="fieldId('city')"
             v-model="address.city"
@@ -98,7 +98,7 @@ const autocomplete = (token: string) => `section-${props.addressType} ${props.ad
         </div>
 
         <div class="w-full">
-          <label :for="fieldId('country')">{{ $t('billing.country') }}</label>
+          <label :for="fieldId('country')">{{ $t('billing.country') }} <span class="text-red-500">*</span></label>
           <CountrySelect
             :id="fieldId('country')"
             v-model="address.country"
@@ -109,7 +109,7 @@ const autocomplete = (token: string) => `section-${props.addressType} ${props.ad
         </div>
 
         <div class="w-full">
-          <label :for="fieldId('zip')">{{ $t('billing.zip') }}</label>
+          <label :for="fieldId('zip')">{{ $t('billing.zip') }} <span class="text-red-500">*</span></label>
           <input
             :id="fieldId('zip')"
             v-model="address.postcode"
@@ -123,15 +123,19 @@ const autocomplete = (token: string) => `section-${props.addressType} ${props.ad
         </div>
 
         <div class="w-full col-span-full">
-          <label :for="fieldId('phone')">{{ $t('billing.phone') }} ({{ $t('general.optional') }})</label>
+          <label :for="fieldId('phone')" class="block">
+            {{ $t('billing.phone') }} <span class="text-red-500">*</span>
+            <span class="block text-xs font-normal text-gray-500 mt-0.5">Shipit-palvelu vaatii puhelinnumeron toimituksen suorittamiseksi.</span>
+          </label>
           <input
             :id="fieldId('phone')"
             v-model="address.phone"
             :name="fieldId('phone')"
-            placeholder="+1 234 567 8901"
+            placeholder="+358 40 123 4567"
             :autocomplete="autocomplete('tel')"
             type="tel"
-            inputmode="tel" />
+            inputmode="tel"
+            required />
         </div>
       </template>
     </div>
