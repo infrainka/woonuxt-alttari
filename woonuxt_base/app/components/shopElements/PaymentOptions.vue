@@ -11,10 +11,13 @@ const paymentMethod = toRef(props, 'modelValue');
 const emits = defineEmits<{
   'update:modelValue': [gateway: PaymentGateway];
 }>();
+
+const { getGateway } = usePaymentGateways();
+
 const gateways = computed<PaymentGateway[]>(() => {
   const allGateways = props.paymentGateways?.nodes || [];
   // Only keep gateways where the ID includes 'stripe'
-  return allGateways.filter((gateway) => gateway.id === 'stripe' || gateway.id.includes('stripe'));
+  return allGateways.filter((gateway) => gateway?.id && (gateway.id === 'stripe' || gateway.id.includes('stripe')));
 });
 
 const selectedGatewayId = computed<string>(() => {
