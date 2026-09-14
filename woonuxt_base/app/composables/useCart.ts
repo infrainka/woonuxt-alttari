@@ -226,7 +226,13 @@ export function useCart() {
 
     if (!import.meta.client) return;
     const domain = getDomain(window.location.href);
-    const cookieOptions = domain ? { domain, path: '/' } : { path: '/' };
+    const cookieOptions = {
+      domain: domain || undefined,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // Persist for 7 days instead of "Session" only
+      sameSite: 'lax' as const,
+      secure: true, // Required for cross-site tracking prevention bypass
+    };
     const sessionCookie = useCookie<string | null>('woocommerce-session', cookieOptions);
     sessionCookie.value = token;
   };
