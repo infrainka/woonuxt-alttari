@@ -135,6 +135,11 @@ const buildCheckoutPayload = (isPaid = false): CheckoutInput => {
   };
 
 async function updateShippingLocation() {
+
+  const sessionCookie = useCookie<string | null>('woocommerce-session').value;
+    if (sessionCookie) {
+      useGqlHeaders({ 'woocommerce-session': `Session ${sessionCookie}` });
+    }
     // 1. Check if the postal code is ready before doing anything
     const checkBilling = customer.value?.billing;
     const checkShipping = orderInput.value.shipToDifferentAddress ? customer.value?.shipping : customer.value?.billing;
