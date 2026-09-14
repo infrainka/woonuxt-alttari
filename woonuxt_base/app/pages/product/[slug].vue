@@ -331,7 +331,7 @@ const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : is
                 {{ displayProduct.name }}
                 <LazyWPAdminLink :link="`/wp-admin/post.php?post=${product.databaseId}&action=edit`">Edit</LazyWPAdminLink>
               </h1>
-              <StarRating v-if="storeSettings.showReviews" :rating="averageRating" :count="reviewCount" />
+              <StarRating v-if="false" :rating="averageRating" :count="reviewCount" />
             </div>
             <ProductPrice class="text-xl" :sale-price="priceTarget?.salePrice" :regular-price="priceTarget?.regularPrice" />
           </div>

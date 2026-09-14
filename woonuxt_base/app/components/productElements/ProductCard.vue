@@ -221,8 +221,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="p-2">
-      <StarRating v-if="storeSettings.showReviews" :rating="node.averageRating ?? undefined" :count="node.reviewCount ?? undefined" />
-      <NuxtLink v-if="node.slug" :to="productLink" :title="node.name || undefined">
+     <StarRating v-if="false" :rating="node.averageRating ?? undefined" :count="node.reviewCount ?? undefined" />      <NuxtLink v-if="node.slug" :to="productLink" :title="node.name || undefined">
         <h2 class="mb-2 font-light leading-tight text-white group-hover:text-primary">{{ node.name }}</h2>
       </NuxtLink>
       <ProductPrice class="text-sm" :sale-price="node.salePrice ?? undefined" :regular-price="node.regularPrice ?? undefined" />
