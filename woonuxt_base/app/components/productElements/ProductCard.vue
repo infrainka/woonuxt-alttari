@@ -174,10 +174,11 @@ onMounted(() => {
         <template v-for="(image, slideIndex) in sliderImages" :key="image.key">
           <NuxtLink
             v-if="node.slug"
-            class="product-card-slide block flex-[0_0_100%] snap-start snap-always aspect-8/9 overflow-hidden rounded-lg"
+            class="product-card-slide block flex-[0_0_100%] snap-start snap-always aspect-[8/9] overflow-hidden rounded-lg"
             :data-index="slideIndex"
             :to="productLink">
             <NuxtPicture
+              class="block w-full h-full"
               :width="imgWidth"
               :height="imgHeight"
               :src="image.src"
@@ -191,7 +192,7 @@ onMounted(() => {
                 fetchpriority: slideIndex === 0 && isFirstProduct ? 'high' : undefined,
               }" />
           </NuxtLink>
-          <div v-else class="product-card-slide block flex-[0_0_100%] snap-start snap-always aspect-8/9 overflow-hidden rounded-lg" :data-index="slideIndex">
+          <div v-else class="product-card-slide block flex-[0_0_100%] snap-start snap-always aspect-[8/9] overflow-hidden rounded-lg" :data-index="slideIndex">
             <NuxtPicture
               :width="imgWidth"
               :height="imgHeight"
@@ -228,3 +229,26 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* 1. Force the slide wrapper to be exactly 8/9 proportion based on width */
+.product-card-slide {
+  aspect-ratio: 8 / 9;
+}
+
+/* 2. Force the Nuxt picture wrapper to fill the slide */
+.product-card-slide :deep(picture) {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 3. Force the image to cover the picture wrapper without stretching */
+.product-card-slide :deep(img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+</style>
