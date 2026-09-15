@@ -28,7 +28,7 @@ const saveForFuture = computed({
 <template>
   <div>
     <StripeElement
-      v-if="isStripeElementVisible && stripe"
+      v-if="isStripeElementVisible && stripe && clientSecret"
       :stripe
       :client-secret="clientSecret"
       :customer-id="customerId"
