@@ -5,7 +5,7 @@ const route = useRoute();
 
 const { t } = useI18n();
 const { query } = route;
-const { cart, paymentGateways, isBillingAddressEnabled, refreshCart } = useCart();
+const { cart, paymentGateways, isBillingAddressEnabled } = useCart();
 const { customer, viewer, navigateToLogin } = useAuth();
 const { orderInput, isProcessingOrder, processCheckout, checkoutError, resolvePaymentMethodId } = useCheckout();
 const { setActiveGateway, isActiveGatewayReady, processActiveGatewayPayment, getActiveGatewayDisabledMessage, resetActiveGateway } = usePaymentGateways();
@@ -97,10 +97,6 @@ onBeforeMount(() => {
   if (customer.value && !customer.value.shipping && customer.value.billing) {
     customer.value.shipping = { ...customer.value.billing };
   }
-
-  // init.ts only fetches paymentGateways up-front when /checkout is the first page loaded in the tab;
-  // arriving here via client-side navigation otherwise leaves it unset, so force a refresh here.
-  if (!paymentGateways.value) void refreshCart();
 });
 
 const shouldShowShippingFlow = computed<boolean>(() => {
