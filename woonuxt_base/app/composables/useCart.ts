@@ -269,12 +269,21 @@ export function useCart() {
     return hasUsableCartFields ? (candidate as CartQueryPayload) : null;
   };
 
-  const fetchCartSnapshot = async (): Promise<CartQueryPayload> => {
+const fetchCartSnapshot = async (): Promise<CartQueryPayload> => {
     const { getAuthTokenForRequest } = useAuthTokens();
     const authToken = await getAuthTokenForRequest();
-    const requestHeaders = authToken ? { Authorization: `Bearer ${authToken}` } : undefined;
+    
+    const requestHeaders: Record<string, string> = {};
+    if (authToken) requestHeaders['Authorization'] = `Bearer ${authToken}`;
 
-    return await gql.getCart(undefined, requestHeaders);
+    // Manually inject the session cookie so the cart is never wiped on page load
+    const sessionCookie = useCookie<string | null>('woocommerce-session').value;
+    if (sessionCookie) {
+      requestHeaders['woocommerce-session'] = `Session ${sessionCookie}`;
+      useGqlHeaders({ 'woocommerce-session': `Session ${sessionCookie}` }); // Sync global state too
+    }
+
+    return await gql.getCart(undefined, Object.keys(requestHeaders).length > 0 ? requestHeaders : undefined);
   };
 
   const hasAuthCookies = (): boolean => {
@@ -283,15 +292,22 @@ export function useCart() {
     return !!(authToken.value || refreshToken.value);
   };
 
-  const fetchCartSummarySnapshot = async (): Promise<CartSummaryQueryPayload> => {
-    let requestHeaders: Record<string, string> | undefined;
+const fetchCartSummarySnapshot = async (): Promise<CartSummaryQueryPayload> => {
+    const requestHeaders: Record<string, string> = {};
+    
     if (hasAuthCookies()) {
       const { getAuthTokenForRequest } = useAuthTokens();
       const authToken = await getAuthTokenForRequest();
-      requestHeaders = authToken ? { Authorization: `Bearer ${authToken}` } : undefined;
+      if (authToken) requestHeaders['Authorization'] = `Bearer ${authToken}`;
     }
 
-    return await gql.getCartSummary(undefined, requestHeaders);
+    // Manually inject the session cookie
+    const sessionCookie = useCookie<string | null>('woocommerce-session').value;
+    if (sessionCookie) {
+      requestHeaders['woocommerce-session'] = `Session ${sessionCookie}`;
+    }
+
+    return await gql.getCartSummary(undefined, Object.keys(requestHeaders).length > 0 ? requestHeaders : undefined);
   };
 
   async function refreshCartSummary(): Promise<boolean> {
