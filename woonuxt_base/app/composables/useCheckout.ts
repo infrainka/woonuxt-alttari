@@ -135,8 +135,13 @@ const buildCheckoutPayload = (isPaid = false): CheckoutInput => {
   };
 
 async function updateShippingLocation() {
+    // We do not need to recalculate shipping costs mid-checkout for Finland.
+    // Returning immediately prevents mobile autofill from firing premature mutations 
+    // that were wiping the WooCommerce session.
+    return;
 
-  const sessionCookie = useCookie<string | null>('woocommerce-session').value;
+    /*
+    const sessionCookie = useCookie<string | null>('woocommerce-session').value;
     if (sessionCookie) {
       useGqlHeaders({ 'woocommerce-session': `Session ${sessionCookie}` });
     }
@@ -242,6 +247,7 @@ async function updateShippingLocation() {
     } finally {
       isUpdatingCart.value = false;
     }
+    */
   }
 
   async function openPayPalWindow(redirectUrl: string): Promise<boolean> {
