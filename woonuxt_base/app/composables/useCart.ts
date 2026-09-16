@@ -247,9 +247,36 @@ export function useCart() {
     if (customer) updateCustomer(customer);
     if (!customer?.sessionToken && viewer?.wooSessionToken) syncWooSession(viewer.wooSessionToken);
 
+    //console.log('[applyCartSnapshot]', {
+  //gotPaymentGateways: !!paymentGateways,
+  //gatewayIds: paymentGateways?.nodes?.map(g => g?.id),
+  //cartItemCount: cart?.contents?.itemCount,
+//});
+
     if (paymentGateways) updatePaymentGateways(paymentGateways);
     if (loginClients) updateLoginClients(loginClients.filter((client) => client !== null));
   };
+
+  let gatewaysFetchInFlight: Promise<void> | null = null;
+
+async function ensurePaymentGatewaysLoaded(): Promise<void> {
+  if (paymentGateways.value) return;
+  if (gatewaysFetchInFlight) return gatewaysFetchInFlight;
+
+  gatewaysFetchInFlight = nuxtApp.runWithContext(async () => {
+    try {
+      const payload = await fetchCartSnapshot();
+      if (payload.paymentGateways) updatePaymentGateways(payload.paymentGateways);
+    } catch (error) {
+      const recovered = extractCartPayloadFromError(error);
+      if (recovered?.paymentGateways) updatePaymentGateways(recovered.paymentGateways);
+    } finally {
+      gatewaysFetchInFlight = null;
+    }
+  });
+
+  return gatewaysFetchInFlight;
+}
 
   const extractCartPayloadFromError = (error: unknown): CartQueryPayload | null => {
     type ErrorWithData = { response?: { data?: { data?: unknown } }; data?: { data?: unknown } };
@@ -278,6 +305,7 @@ const fetchCartSnapshot = async (): Promise<CartQueryPayload> => {
 
     // Manually inject the session cookie so the cart is never wiped on page load
     const sessionCookie = useCookie<string | null>('woocommerce-session').value;
+    //console.log('[fetchCartSnapshot]', { sessionCookieAtCallTime: sessionCookie });
     if (sessionCookie) {
       requestHeaders['woocommerce-session'] = `Session ${sessionCookie}`;
       useGqlHeaders({ 'woocommerce-session': `Session ${sessionCookie}` }); // Sync global state too
@@ -419,9 +447,14 @@ const fetchCartSummarySnapshot = async (): Promise<CartSummaryQueryPayload> => {
 
   /** Fetches the full cart from the server only when it is not already loaded. */
   function refreshCartIfNeeded(): void {
-    if (cart.value || isUpdatingCart.value) return;
-    isUpdatingCart.value = true;
-    void refreshCart();
+    // console.log('[refreshCartIfNeeded]', {
+    //cartValue: cart.value,
+   // isUpdatingCart: isUpdatingCart.value,
+   // paymentGateways: paymentGateways.value,
+  //});
+  if (cart.value || isUpdatingCart.value) return;
+  isUpdatingCart.value = true;
+  void refreshCart();
   }
 
   // toggle the cart visibility
@@ -628,5 +661,6 @@ const fetchCartSummarySnapshot = async (): Promise<CartSummaryQueryPayload> => {
     updateShippingMethod,
     applyCoupon,
     removeCoupon,
+    ensurePaymentGatewaysLoaded,
   };
 }

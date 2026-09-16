@@ -10,6 +10,7 @@ export function useCheckout() {
   const { cart, refreshCart, isUpdatingCart } = useCart();
   const gql = useWooGraphQL();
 
+
   const resolvePaymentMethodId = (paymentMethod: unknown): string => {
     if (typeof paymentMethod === 'string') return paymentMethod;
     if (paymentMethod && typeof paymentMethod === 'object' && 'id' in paymentMethod) {

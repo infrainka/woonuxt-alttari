@@ -5,10 +5,14 @@ const route = useRoute();
 
 const { t } = useI18n();
 const { query } = route;
-const { cart, paymentGateways, isBillingAddressEnabled } = useCart();
+const { cart, paymentGateways, isBillingAddressEnabled, ensurePaymentGatewaysLoaded } = useCart();
 const { customer, viewer, navigateToLogin } = useAuth();
 const { orderInput, isProcessingOrder, processCheckout, checkoutError, resolvePaymentMethodId } = useCheckout();
 const { setActiveGateway, isActiveGatewayReady, processActiveGatewayPayment, getActiveGatewayDisabledMessage, resetActiveGateway } = usePaymentGateways();
+
+onMounted(() => {
+  void ensurePaymentGatewaysLoaded();
+});
 
 const buttonText = ref<string>(isProcessingOrder.value ? t('general.processing') : t('shop.checkoutButton'));
 const checkoutPaymentGateways = paymentGateways;
