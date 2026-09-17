@@ -226,9 +226,9 @@ export function useCart() {
     useGqlHeaders({ 'woocommerce-session': `Session ${token}` });
 
     if (!import.meta.client) return;
-    const domain = getDomain(window.location.href);
+    //const domain = getDomain(window.location.href);
     const cookieOptions = {
-      domain: domain || undefined,
+     // domain: domain || undefined,
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // Persist for 7 days instead of "Session" only
       sameSite: 'lax' as const,
@@ -237,6 +237,11 @@ export function useCart() {
     const sessionCookie = useCookie<string | null>('woocommerce-session', cookieOptions);
     sessionCookie.value = token;
   };
+
+  if (!sessionSyncRegistered) {
+  sessionSyncRegistered = true;
+  useGqlSessionToken((token) => syncWooSession(token));
+}
 
   const applyCartSnapshot = (payload: CartQueryPayload): void => {
     const { updateCustomer, updateViewer, updateLoginClients } = useAuth();

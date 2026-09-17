@@ -203,6 +203,7 @@ const notifySessionToken = (token: string): void => {
 const woocommerceSessionFetch: typeof fetch = async (input, init) => {
   const response = await fetch(input, init);
   const token = response.headers.get('woocommerce-session');
+  //console.log('[woo-session-fetch]', token); // TEMP
   if (token) notifySessionToken(token);
   return response;
 };
