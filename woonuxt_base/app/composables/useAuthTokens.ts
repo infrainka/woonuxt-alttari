@@ -1,4 +1,5 @@
 import type { LoginSession } from '#types/gql';
+import { emitGqlSessionToken } from './gql';
 
 const REFRESH_TOKEN_COOKIE = 'auth-refresh-token';
 const AUTH_TOKEN_COOKIE = 'auth-token';
@@ -109,6 +110,9 @@ export const useAuthTokens = () => {
         operationName: 'refreshToken',
       }),
     }).finally(() => clearTimeout(timeout));
+
+    const sessionToken = response.headers.get('woocommerce-session');
+if (sessionToken) emitGqlSessionToken(sessionToken);
 
     if (!response.ok) {
       if (response.status >= 500) throw new Error('Refresh token request failed');

@@ -146,6 +146,10 @@ export const useGqlError = (handler: GqlErrorHandler): (() => void) => {
   return () => errorHandlers.delete(handler);
 };
 
+export const emitGqlSessionToken = (token: string): void => {
+  notifySessionToken(token);
+};
+
 export const useWooGraphQL = (): Sdk => {
   const nuxtApp = useNuxtApp();
   const headerState = useGqlHeaderState();
@@ -155,7 +159,10 @@ export const useWooGraphQL = (): Sdk => {
     credentials: clientConfig.fetchOptions?.credentials ?? 'include',
     mode: clientConfig.fetchOptions?.mode ?? 'cors',
     headers: baseHeaders,
+    fetch: woocommerceSessionFetch,
   });
+
+  
 
   const wrapper: SdkFunctionWrapper = async (action, _operationName, _operationType, _variables) => {
     try {
@@ -174,6 +181,30 @@ export const useWooGraphQL = (): Sdk => {
   };
 
   return getSdk(client, wrapper);
+};
+
+const sessionTokenHandlers = new Set<(token: string) => void>();
+
+export const useGqlSessionToken = (handler: (token: string) => void): (() => void) => {
+  sessionTokenHandlers.add(handler);
+  return () => sessionTokenHandlers.delete(handler);
+};
+
+const notifySessionToken = (token: string): void => {
+  for (const handler of sessionTokenHandlers) {
+    try {
+      handler(token);
+    } catch (handlerError) {
+      console.error('[woonuxt] GraphQL session token handler failed', handlerError);
+    }
+  }
+};
+
+const woocommerceSessionFetch: typeof fetch = async (input, init) => {
+  const response = await fetch(input, init);
+  const token = response.headers.get('woocommerce-session');
+  if (token) notifySessionToken(token);
+  return response;
 };
 
 export const useAsyncGql = <TMethod extends keyof Sdk>(

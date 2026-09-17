@@ -3,6 +3,7 @@ import type { GetCartQuery, GetCartSummaryQuery } from '#gql/default';
 
 let cartMutationQueue: Promise<void> = Promise.resolve();
 let refreshCartInFlight: Promise<boolean> | null = null;
+let sessionSyncRegistered = false;
 
 /**
  * @name useCart
@@ -484,7 +485,9 @@ const fetchCartSummarySnapshot = async (): Promise<CartSummaryQueryPayload> => {
           },
           async () => {
             const { addToCart } = await gql.addToCart({ input: { ...input, quantity } });
-            return addToCart?.cart ?? null;
+            const token = addToCart?.viewer?.wooSessionToken ?? addToCart?.customer?.sessionToken;
+          if (token) syncWooSession(token);
+          return addToCart?.cart ?? null;
           },
         );
         return;
