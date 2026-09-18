@@ -205,6 +205,7 @@ const selectProductInput = computed<AddToCartInput>(() => {
 
 const handleAddToCart = (): void => {
   if (!product.value) return;
+  if (unselectedAttributes.value.length > 0) return;
   void addToCart(selectProductInput.value, { product: product.value, variation: activeVariation.value });
 };
 
@@ -291,11 +292,46 @@ const stockStatus = computed(() => {
   return product.value?.stockStatus ?? StockStatusEnum.OutOfStock;
 });
 
+// Classify an attribute as a ring "size" or a chain/necklace "length" selector, based on its
+// taxonomy/local name and label (e.g. "pa_koko"/"Koko" vs "pa_pituus"/"Ketjun pituus").
+const classifyAttribute = (attr: { name?: string | null; label?: string | null }): 'size' | 'length' | null => {
+  const haystack = normalizeMatchToken(`${attr?.name ?? ''} ${attr?.label ?? ''}`);
+  if (!haystack) return null;
+  if (haystack.includes('pituus') || haystack.includes('length')) return 'length';
+  if (haystack.includes('koko') || haystack.includes('size')) return 'size';
+  return null;
+};
+
+// Attributes that the customer still needs to pick a value for before this variation can be added to cart.
+// Attributes not flagged "used for variations" (e.g. "kokoelmat"/collection) are informational only and never required.
+const unselectedAttributes = computed(() => {
+  if (!isVariableProduct.value || !product.value?.attributes?.nodes?.length) return [];
+
+  const selectedByKey = new Map(variation.value.map((v) => [normalizeMatchKey(v.name), v.value]));
+  return product.value.attributes.nodes.filter((attr) => attr?.variation && !selectedByKey.get(normalizeMatchKey(attr?.name)));
+});
+
+const missingSelectionWarning = computed<string | null>(() => {
+  const missing = unselectedAttributes.value;
+  if (!missing.length) return null;
+
+  const classifications = new Set(missing.map(classifyAttribute));
+  if (classifications.size === 1) {
+    const [only] = classifications;
+    if (only === 'size') return t('shop.selectSizeWarning');
+    if (only === 'length') return t('shop.selectLengthWarning');
+  }
+
+  const attributeNames = missing.map((attr) => attr?.label || attr?.name).filter(Boolean).join(', ');
+  return t('shop.selectAttributeWarning', { attribute: attributeNames });
+});
+
 const disabledAddToCart = computed(() => {
   const canPurchaseWithCurrentStock = stockStatus.value === StockStatusEnum.InStock || stockStatus.value === StockStatusEnum.OnBackorder;
   const isInvalidType = !displayProduct.value;
   const isCartUpdating = isOptimisticCartMode.value ? false : isUpdatingCart.value || isAddingToCart.value;
-  return !canPurchaseWithCurrentStock || isCartUpdating || isInvalidType;
+  const hasMissingSelection = unselectedAttributes.value.length > 0;
+  return !canPurchaseWithCurrentStock || isCartUpdating || isInvalidType || hasMissingSelection;
 });
 
 const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : isUpdatingCart.value));
@@ -362,6 +398,9 @@ const addToCartLoading = computed(() => (isOptimisticCartMode.value ? false : is
               :default-attributes="defaultAttributes"
               :variations="product.variations.nodes"
               @attrs-changed="updateSelectedVariations" />
+            <p v-if="isVariableProduct && missingSelectionWarning" class="mb-4 text-sm font-medium text-red-600" role="alert">
+              {{ missingSelectionWarning }}
+            </p>
             <div
               v-if="isVariableProduct || isSimpleProduct"
               class="fixed bottom-0 left-0 z-10 flex items-center w-full gap-4 p-4 mt-12 shadow-lg bg-white/90 md:static md:bg-transparent md:p-0 md:shadow-none">

@@ -97,6 +97,9 @@
     "price": "Hinta",
     "category": "Kategoriat",
     "addToCart": "Lisää ostoskoriin",
+    "selectSizeWarning": "Valitse koko",
+    "selectLengthWarning": "Valitse pituus",
+    "selectAttributeWarning": "Valitse {attribute}",
     "adding": "Lisätään...",
     "productDescription": "Kuvaus",
     "orderSummary": "Tilauksen yhteenveto",
@@ -229,6 +232,14 @@
   "footer": {
     "copyright": "Copyright 2026 Alttari | Kaikki oikeudet pidätetään.",
     "privacy": "Tietosuojalauseke",
-    "terms": "Toimitus, vaihto -ja palautusehdot"
+    "terms": "Toimitus, vaihto -ja palautusehdot",
+    "cookieSettings": "Evästeasetukset"
+  },
+  "cookies": {
+  "necessary": "Käytämme ainoastaan sivuston toiminnan ja turvallisuuden kannalta välttämättömiä evästeitä.",
+  "optional": "Emme tällä hetkellä käytä analytiikka- tai markkinointievästeitä.",
+  "changeChoice": "Koska käytössä on vain välttämättömiä evästeitä, erillistä evästevalintaa ei tarvita.",
+  "accept": "Selvä",
+  "privacyLink": "Lue tietosuojaseloste"
   }
 }

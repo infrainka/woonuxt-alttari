@@ -12,7 +12,7 @@ useHead({
   <div class="alttari-privacy-page container max-w-4xl mx-auto px-4 py-16 bg-white min-h-screen">
     
     <h1 class="text-3xl font-bold mb-2">Tietosuojalauseke</h1>
-    <p class="privacy-date text-sm mb-8">Päivitetty: 31.07.2026</p>
+    <p class="privacy-date text-sm mb-8">Päivitetty: 18.09.2026</p>
     
     <p class="mb-8">Tässä tietosuojaselosteessa kerrotaan, miten Alttari käsittelee asiakkaiden ja verkkosivuston käyttäjien henkilötietoja.</p>
 
@@ -144,8 +144,8 @@ useHead({
       <h2 class="text-2xl font-semibold mb-4">Evästeet</h2>
       <p class="mb-2">Alttarin verkkosivusto käyttää evästeitä.</p>
       <p class="mb-2">Välttämättömiä evästeitä käytetään esimerkiksi ostoskorin, kassatoimintojen, kirjautumisen, lomakkeiden ja tietoturvan toteuttamiseen.</p>
-      <p class="mb-2">Analytiikka-, markkinointi- ja muita ei-välttämättömiä evästeitä käytetään vain käyttäjän suostumuksella silloin, kun laki edellyttää suostumusta.</p>
-      <p>Käyttäjä voi muuttaa tai peruuttaa evästevalintansa verkkosivuston evästeasetuksista.</p>
+      <p class="mb-2">Analytiikka-, markkinointi- ja muita ei-välttämättömiä evästeitä ei ole käytössä tällä hetkellä.</p>
+      <p>Jos ei-välttämättömiä evästeitä otetaan myöhemmin käyttöön, niiden käyttö edellyttää suostumustasi, jonka voit antaa tai peruuttaa verkkosivuston evästeasetuksista.</p>
     </section>
 
     <section class="mb-8">

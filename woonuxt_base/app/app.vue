@@ -38,7 +38,7 @@ useHead({
 <template>
   <NuxtPwaManifest />
   <NuxtLoadingIndicator />
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen" style="padding-bottom: var(--cookie-banner-height, 0px)">
     <AppHeader />
 
     <Transition name="slide-from-right">
@@ -56,6 +56,7 @@ useHead({
     </Transition>
 
     <AppFooter />
+    <CookieConsent />
   </div>
 </template>
 

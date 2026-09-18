@@ -96,6 +96,9 @@
     "wishlistAdd": "Ajouter aux favoris",
     "wishlistNoItems": "Vous n'avez aucun article dans vos favoris",
     "addToCart": "Ajouter au panier",
+    "selectSizeWarning": "Veuillez choisir une taille",
+    "selectLengthWarning": "Veuillez choisir une longueur",
+    "selectAttributeWarning": "Veuillez choisir {attribute}",
     "adding": "En cours d'ajout...",
     "productDescription": "Description",
     "productImage": "Image du produit",
@@ -177,5 +180,10 @@
     "invalidPasswordResetLink": "Le lien de réinitialisation du mot de passe est invalide.",
     "general": "Une erreur est survenue",
     "noOrder": "Impossible de trouver votre commande. Veuillez réessayer plus tard."
+  },
+  "cookies": {
+    "message": "Nous utilisons uniquement des cookies essentiels pour que le panier et la connexion fonctionnent.",
+    "accept": "Compris",
+    "privacyLink": "Consultez notre politique de confidentialité"
   }
 }

@@ -95,6 +95,9 @@
     "wishlistAdd": "Adicionar à Lista de Desejos",
     "wishlistNoItems": "Você não tem itens na sua lista de desejos",
     "addToCart": "Adicionar ao Carrinho",
+    "selectSizeWarning": "Selecione um tamanho",
+    "selectLengthWarning": "Selecione um comprimento",
+    "selectAttributeWarning": "Selecione {attribute}",
     "adding": "Adicionando...",
     "productDescription": "Descrição",
     "productImage": "Imagem do Produto",
@@ -176,5 +179,10 @@
     "invalidPasswordResetLink": "O link de redefinição de senha é inválido.",
     "general": "Algo deu errado",
     "noOrder": "Não conseguimos encontrar seu pedido. Por favor, tente novamente mais tarde."
+  },
+  "cookies": {
+    "message": "Usamos apenas cookies essenciais para o carrinho e o login funcionarem.",
+    "accept": "Entendi",
+    "privacyLink": "Leia nossa política de privacidade"
   }
 }

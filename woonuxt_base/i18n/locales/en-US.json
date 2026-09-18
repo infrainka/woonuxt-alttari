@@ -104,6 +104,9 @@
     "wishlistAdd": "Add to Wishlist",
     "wishlistNoItems": "You have no items in your wishlist",
     "addToCart": "Add to Cart",
+    "selectSizeWarning": "Please select a size",
+    "selectLengthWarning": "Please select a length",
+    "selectAttributeWarning": "Please select {attribute}",
     "adding": "Adding...",
     "productDescription": "Description",
     "productImage": "Product Image",
@@ -227,6 +230,14 @@
   "footer": {
     "copyright": "Copyright 2026 Alttari | All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Shipping, Exchange & Return Policies"
+    "terms": "Shipping, Exchange & Return Policies",
+    "cookieSettings": "Cookie Settings"
+  },
+  "cookies": {
+"necessary": "We only use strictly necessary cookies to keep the site secure and functional.",
+  "optional": "We do not currently use any analytics or marketing cookies.",
+  "changeChoice": "Since only essential cookies are in use, no separate cookie choices are required.",
+  "accept": "Got it",
+  "privacyLink": "Read privacy policy"
   }
 }

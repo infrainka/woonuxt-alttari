@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { wooNuxtVersionInfo } = useHelpers();
+const { openCookieSettings } = useCookieConsent();
 </script>
 
 <template>
@@ -31,7 +32,10 @@ const { wooNuxtVersionInfo } = useHelpers();
           <NuxtLink to="/terms" class="hover:text-white transition-colors">
             {{ $t('footer.terms') }}
           </NuxtLink>
-          
+          <button type="button" class="hover:text-white transition-colors cursor-pointer" @click="openCookieSettings">
+            {{ $t('footer.cookieSettings') }}
+          </button>
+
           <LangSwitcher class="ml-4" />
         </div>
         

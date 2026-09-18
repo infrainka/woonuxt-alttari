@@ -97,6 +97,9 @@
     "wishlistAdd": "위시리스트에 추가",
     "wishlistNoItems": "위시리스트에 담긴 상품이 없습니다",
     "addToCart": "장바구니에 담기",
+    "selectSizeWarning": "사이즈를 선택해주세요",
+    "selectLengthWarning": "길이를 선택해주세요",
+    "selectAttributeWarning": "{attribute}을(를) 선택해주세요",
     "adding": "담는 중...",
     "productDescription": "상품 설명",
     "productImage": "상품 이미지",
@@ -178,5 +181,10 @@
     "invalidPasswordResetLink": "비밀번호 재설정 링크가 유효하지 않습니다.",
     "general": "문제가 발생했습니다",
     "noOrder": "주문 내역을 찾을 수 없습니다. 잠시 후 다시 시도해 주세요."
+  },
+  "cookies": {
+    "message": "장바구니와 로그인 기능을 위해 꼭 필요한 쿠키만 사용합니다.",
+    "accept": "확인",
+    "privacyLink": "개인정보처리방침 보기"
   }
 }

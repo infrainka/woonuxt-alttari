@@ -97,6 +97,9 @@
     "wishlistAdd": "Aan verlanglijst toevoegen",
     "wishlistNoItems": "Uw verlanglijst is leeg",
     "addToCart": "Toevoegen aan winkelwagen",
+    "selectSizeWarning": "Selecteer een maat",
+    "selectLengthWarning": "Selecteer een lengte",
+    "selectAttributeWarning": "Selecteer {attribute}",
     "adding": "Bezig met toevoegen...",
     "productDescription": "Beschrijving",
     "productImage": "Productafbeelding",
@@ -178,5 +181,10 @@
     "invalidPasswordResetLink": "De link om uw wachtwoord opnieuw in te stellen is ongeldig.",
     "general": "Er is iets misgegaan",
     "noOrder": "We konden uw bestelling niet vinden. Probeer het later opnieuw."
+  },
+  "cookies": {
+    "message": "We gebruiken alleen noodzakelijke cookies zodat winkelwagen en inloggen werken.",
+    "accept": "Begrepen",
+    "privacyLink": "Lees ons privacybeleid"
   }
 }

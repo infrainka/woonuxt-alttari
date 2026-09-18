@@ -96,6 +96,9 @@
     "wishlistAdd": "Agregar a la lista de deseos",
     "wishlistNoItems": "No tienes ningún producto en tu lista de deseos",
     "addToCart": "Agregar al carrito",
+    "selectSizeWarning": "Selecciona una talla",
+    "selectLengthWarning": "Selecciona una longitud",
+    "selectAttributeWarning": "Selecciona {attribute}",
     "adding": "Agregando...",
     "productDescription": "Descripción del producto",
     "productImage": "Imagen del producto",
@@ -177,5 +180,10 @@
     "invalidPasswordResetLink": "El enlace de restablecimiento de contraseña no es válido.",
     "general": "Ha ocurrido un error",
     "noOrder": "No hemos podido encontrar tu pedido. Por favor, inténtalo de nuevo más tarde."
+  },
+  "cookies": {
+    "message": "Solo utilizamos cookies esenciales para que el carrito y el inicio de sesión funcionen.",
+    "accept": "Entendido",
+    "privacyLink": "Lee nuestra política de privacidad"
   }
 }
