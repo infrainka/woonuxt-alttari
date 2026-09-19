@@ -41,5 +41,5 @@ watch(
       {{ state.name }}
     </option>
   </select>
-  <input v-else v-bind="$attrs" type="text" placeholder="State" @change="select" />
+  <input v-else v-bind="$attrs" type="text" placeholder="Maakunta" @change="select" />
 </template>

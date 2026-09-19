@@ -46,7 +46,10 @@
     "shippingReturns": "Shipping & Returns",
     "privacyPolicy": "Privacy Policy",
     "termsConditions": "Terms & Conditions",
-    "updating": "Updating"
+    "updating": "Updating",
+    "processingPaymentMessage": "We're securely processing your payment. This may take a few seconds...",
+    "processingOrderMessage": "We're confirming your order with the store. Please wait...",
+    "doNotCloseWindow": "Please don't close or refresh this window."
   },
 "hero": {
     "title1": "Bold and durable",
@@ -141,7 +144,7 @@
     "browseOurProducts": "Browse our products",
     "viewCart": "View Cart",
     "checkout": "Checkout",
-    "checkoutButton": "Checkout",
+    "checkoutButton": "Pay for Order",
     "discount": "Discount",
     "giftCards": "Gift Cards",
     "searchProducts": "Search Products...",
@@ -169,6 +172,7 @@
     "address2": "Address 2",
     "city": "City",
     "state": "State",
+    "statePlaceholder": "State / Province",
     "zip": "Postal Code / ZIP",
     "country": "Country",
     "countryCode": "Country Code",

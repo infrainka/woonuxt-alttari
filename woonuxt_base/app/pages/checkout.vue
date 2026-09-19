@@ -129,6 +129,15 @@ const handleGatewaySelect = (gateway: PaymentGateway): void => {
   void setActiveGateway(gateway);
 };
 
+// Drives the full-screen processing overlay so the user knows to wait while
+// the payment gateway (e.g. Stripe) and then WooCommerce handle the order.
+const checkoutStage = ref<'payment' | 'order' | null>(null);
+const processingOverlayMessage = computed<string>(() => {
+  if (checkoutStage.value === 'order') return t('general.processingOrderMessage');
+  if (checkoutStage.value === 'payment') return t('general.processingPaymentMessage');
+  return '';
+});
+
 const payNow = async () => {
   buttonText.value = t('general.processing');
   checkoutError.value = null;
@@ -142,22 +151,31 @@ const payNow = async () => {
     return;
   }
 
+  checkoutStage.value = 'payment';
+
   let paymentResult;
   try {
     paymentResult = await processActiveGatewayPayment();
     if (!paymentResult.success) {
       checkoutError.value = paymentResult.error || 'Payment processing failed. Please try again.';
       buttonText.value = t('shop.checkoutButton');
+      checkoutStage.value = null;
       return;
     }
   } catch (error) {
     console.error('Checkout error:', error);
     checkoutError.value = error instanceof Error ? error.message : 'An unexpected error occurred during checkout';
     buttonText.value = t('shop.checkoutButton');
+    checkoutStage.value = null;
     return;
   }
 
-  await processCheckout(paymentResult.isPaid);
+  checkoutStage.value = 'order';
+  try {
+    await processCheckout(paymentResult.isPaid);
+  } finally {
+    checkoutStage.value = null;
+  }
 };
 
 const checkEmailOnBlur = (email?: string | null): void => {
@@ -217,7 +235,7 @@ useSeoMeta({
               <label for="email">{{ $t('billing.email') }} <span class="text-red-500">*</span></label>
               <input
                 v-model="customer.billing.email"
-                placeholder="johndoe@email.com"
+                placeholder="esimerkki@email.com"
                 autocomplete="email"
                 type="email"
                 name="email"
@@ -329,6 +347,10 @@ useSeoMeta({
       </form>
     </template>
     <LoadingIcon v-else class="m-auto" />
+
+    <Transition name="fade">
+      <CheckoutProcessingOverlay v-if="checkoutStage" :message="processingOverlayMessage" />
+    </Transition>
   </div>
 </template>
 
