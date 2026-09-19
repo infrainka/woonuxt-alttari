@@ -23,7 +23,7 @@ const productsToShow = computed(() => products.value.slice((page.value - 1) * pr
 
 .product-grid {
   @apply grid my-4 min-h-37.5 transition-all gap-8 lg:my-8;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .product-grid:empty {
