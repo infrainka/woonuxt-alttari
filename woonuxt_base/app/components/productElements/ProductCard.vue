@@ -169,7 +169,7 @@ onMounted(() => {
       <SaleBadge :node class="absolute z-10 top-2 right-2" />
       <div
         ref="sliderRef"
-        class="no-slider flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain overscroll-y-auto [-webkit-overflow-scrolling:touch]"
+        class="no-slider flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain overscroll-y-auto [-webkit-overflow-scrolling:touch]"
         @scroll.passive="updateCurrentSlide">
         <template v-for="(image, slideIndex) in sliderImages" :key="image.key">
           <NuxtLink
