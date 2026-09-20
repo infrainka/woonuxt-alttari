@@ -157,7 +157,7 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       { code: 'fi_FI', file: 'fi-FI.json', name: 'Suomi 🇫🇮' },
-      { code: 'en_US', file: 'en-US.json', name: 'English 🇺🇸' },
+      // en_US disabled until translations are complete — re-add { code: 'en_US', file: 'en-US.json', name: 'English 🇺🇸' } when ready
     ],
     langDir: 'locales',
     defaultLocale: 'fi_FI',
