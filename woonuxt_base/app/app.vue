@@ -56,7 +56,9 @@ useHead({
     </Transition>
 
     <AppFooter />
-    <CookieConsent />
+    <ClientOnly>
+      <CookieConsent />
+    </ClientOnly>
   </div>
 </template>
 
