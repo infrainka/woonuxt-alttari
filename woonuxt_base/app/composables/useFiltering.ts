@@ -82,8 +82,8 @@ export function useFiltering() {
    */
   function filterProducts(products: Product[]): Product[] {
     return products.filter((product) => {
-      // Category filter
-      const category = getFilter('category') || []; // ["category-slug"]
+      // Category filter - 'kaikki' means "all", so it's not a real filtering category
+      const category = (getFilter('category') || []).filter((slug) => slug !== 'kaikki'); // ["category-slug"]
       const categoryCondition = category.length ? product.productCategories?.nodes?.find((node) => category.includes(node.slug as string)) : true;
 
       // price filter

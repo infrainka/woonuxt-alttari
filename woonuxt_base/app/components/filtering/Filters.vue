@@ -17,7 +17,8 @@ const { data } = await useAsyncGql('getAllTerms', { taxonomies: [...taxonomies, 
 const terms = data.value?.terms?.nodes ?? [];
 
 // Filter out the product category terms and the global product attributes with their terms
-const productCategoryTerms = terms.filter((term) => term.taxonomyName === 'product_cat');
+// 'kaulakorut' is hidden because it has no products in WooCommerce (subcategories still show)
+const productCategoryTerms = terms.filter((term) => term.taxonomyName === 'product_cat' && term.slug !== 'kaulakorut');
 
 // Filter out the color attribute and the rest of the global product attributes
 const attributesWithTerms = globalProductAttributes.map((attr) => ({ ...attr, terms: terms.filter((term) => term.taxonomyName === attr.slug) }));
