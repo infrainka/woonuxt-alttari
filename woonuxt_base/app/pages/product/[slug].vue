@@ -483,7 +483,6 @@ input[type='number']::-webkit-outer-spin-button {
   color-scheme: dark;
 }
 
-/* Replace the old .prose rule with this */
 :deep(.prose),
 :deep(.prose p),
 :deep(.prose strong),

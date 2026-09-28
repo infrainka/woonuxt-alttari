@@ -57,14 +57,12 @@ useHead({
         
         <div class="flex flex-col gap-4">
           <div class="flex items-center gap-4">
-            <!-- Forced the accent line to your Alttari red -->
             <span class="h-8 w-1 shrink-0 bg-[#9B1003]" aria-hidden="true"></span>
             
             <!-- Changed to h2 for better SEO -->
             <h2 class="text-3xl font-bold capitalize tracking-wide md:text-4xl">{{ collection.name }}</h2>
           </div>
           
-          <!-- 4. Render the WordPress description -->
           <div 
             v-if="collection.description" 
             class="prose prose-invert max-w-2xl text-gray-400 mt-2" 

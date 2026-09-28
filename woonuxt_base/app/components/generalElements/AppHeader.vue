@@ -6,7 +6,7 @@ const { isShowingSearch } = useSearching();
   <header class="sticky top-0 z-40 bg-black shadow-md shadow-gray-200 border-b border-transparent outline-gray-950/10 outline">
 <div class="flex flex-col sm:flex-row justify-between items-center bg-[#111111] text-gray-300 text-sm py-3 px-4 sm:px-6 border-b border-gray-800 gap-3 sm:gap-0">
       
-      <!-- Phone & Email (Wraps on very small screens) -->
+      <!-- Phone & email wrap on very small screens -->
       <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6">
         <a href="tel:+358449573133" class="flex items-center gap-2 hover:text-white transition-colors">
           <Icon name="mdi:phone" class="text-[#9B1003] text-lg" /> +358449573133
@@ -18,7 +18,6 @@ const { isShowingSearch } = useSearching();
         </a>
       </div>
       
-      <!-- Socials -->
       <div class="flex items-center gap-4">
         <span>{{ $t('topbar.socials') }}</span>
         <a href="https://www.instagram.com/alttari.shop/" aria-label="Instagram" class="flex items-center justify-center w-7 h-7 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
@@ -54,4 +53,3 @@ const { isShowingSearch } = useSearching();
     </Transition>
   </header>
 </template>
-

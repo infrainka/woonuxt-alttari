@@ -9,7 +9,7 @@ The decoupled frontend application for Alttari, built with Nuxt 3 and connected 
 * **Frontend:** Nuxt 3 / Vue.js
 * **Backend:** Headless WooCommerce (WPGraphQL)
 * **Hosting / CI-CD:** Netlify (`netlify.toml` handles build config)
-* **Styling:** Native CSS (`main.css`) & Vue Scoped Styles (`<style scoped>`). Utility-first frameworks (like Tailwind/UnoCSS) are intentionally excluded to maintain strict component-level encapsulation.
+* **Styling:** Native CSS (`main.css`), Vue Scoped Styles (`<style scoped>`) and Tailwind CSS
 
 ## Environment Variables
 

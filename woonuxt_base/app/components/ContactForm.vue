@@ -73,7 +73,6 @@ const handleSubmit = (event) => {
 </template>
 
 <style scoped>
-/* Paste your exact CSS here */
 .alttari-form-container {
   --alttari-primary: #9B1003;
   --alttari-dark: #000000;
