@@ -144,8 +144,8 @@ useHead({
       <h2 class="text-2xl font-semibold mb-4">Evästeet</h2>
       <p class="mb-2">Alttarin verkkosivusto käyttää evästeitä.</p>
       <p class="mb-2">Välttämättömiä evästeitä käytetään esimerkiksi ostoskorin, kassatoimintojen, kirjautumisen, lomakkeiden ja tietoturvan toteuttamiseen.</p>
-      <p class="mb-2">Analytiikka-, markkinointi- ja muita ei-välttämättömiä evästeitä ei ole käytössä tällä hetkellä.</p>
-      <p>Jos ei-välttämättömiä evästeitä otetaan myöhemmin käyttöön, niiden käyttö edellyttää suostumustasi, jonka voit antaa tai peruuttaa verkkosivuston evästeasetuksista.</p>
+      <p class="mb-2">Käytämme lisäksi analytiikkaevästeitä (Google Tag Manager) sivuston käytön ymmärtämiseksi. Analytiikkaevästeitä käytetään vain, jos annat siihen suostumuksesi evästebannerissa.</p>
+      <p>Voit antaa tai peruuttaa suostumuksesi analytiikkaevästeille milloin tahansa verkkosivuston evästeasetuksista.</p>
     </section>
 
     <section class="mb-8">

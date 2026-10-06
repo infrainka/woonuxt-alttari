@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { consent, acceptCookies } = useCookieConsent();
+const { consent, acceptAllCookies, acceptNecessaryCookies } = useCookieConsent();
 
 const bannerRef = ref<HTMLElement | null>(null);
 
@@ -38,7 +38,12 @@ onBeforeUnmount(() => {
           <NuxtLink to="/privacy-policy" class="underline hover:text-primary">{{ $t('cookies.privacyLink') }}</NuxtLink>
         </p>
       </div>
-      <Button class="w-full shrink-0 sm:w-auto" size="sm" @click="acceptCookies">{{ $t('cookies.accept') }}</Button>
+      <div class="flex w-full shrink-0 flex-col gap-2 sm:w-auto sm:flex-row">
+        <Button class="cookie-banner-btn-outline w-full sm:w-auto" size="sm" variant="outline" @click="acceptNecessaryCookies">{{
+          $t('cookies.necessaryOnly')
+        }}</Button>
+        <Button class="w-full sm:w-auto" size="sm" @click="acceptAllCookies">{{ $t('cookies.accept') }}</Button>
+      </div>
     </div>
   </Transition>
 </template>
@@ -48,5 +53,14 @@ onBeforeUnmount(() => {
 .cookie-banner-message {
   color: #374151;
 }
+
+/* The global rule lives in @layer utilities; an unlayered !important always loses to a layered one, */
+/* so this override must join that layer too (then higher specificity wins within it). */
+@layer utilities {
+  button.cookie-banner-btn-outline.cookie-banner-btn-outline {
+    color: #374151 !important;
+  }
+}
+
 </style>
 

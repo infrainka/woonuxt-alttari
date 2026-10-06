@@ -238,10 +238,11 @@
     "cookieSettings": "Cookie Settings"
   },
   "cookies": {
-"necessary": "We only use strictly necessary cookies to keep the site secure and functional.",
-  "optional": "We do not currently use any analytics or marketing cookies.",
-  "changeChoice": "Since only essential cookies are in use, no separate cookie choices are required.",
-  "accept": "Got it",
-  "privacyLink": "Read privacy policy"
+"necessary": "We use strictly necessary cookies to keep the site secure and functional.",
+  "optional": "We'd also like to use analytics cookies to understand how visitors use our site. These are only set if you agree.",
+  "changeChoice": "You can change or withdraw your choice at any time via the cookie settings link in the footer. Read more in our",
+  "accept": "Accept all",
+  "necessaryOnly": "Necessary only",
+  "privacyLink": "privacy policy"
   }
 }

@@ -240,10 +240,11 @@
     "cookieSettings": "Evästeasetukset"
   },
   "cookies": {
-  "necessary": "Käytämme ainoastaan sivuston toiminnan ja turvallisuuden kannalta välttämättömiä evästeitä.",
-  "optional": "Emme tällä hetkellä käytä analytiikka- tai markkinointievästeitä.",
-  "changeChoice": "Koska käytössä on vain välttämättömiä evästeitä, erillistä evästevalintaa ei tarvita.",
-  "accept": "Selvä",
-  "privacyLink": "Lue tietosuojaseloste"
+  "necessary": "Käytämme sivuston toiminnan ja turvallisuuden kannalta välttämättömiä evästeitä.",
+  "optional": "Haluaisimme käyttää myös analytiikkaevästeitä ymmärtääksemme, miten kävijät käyttävät sivustoa. Näitä käytetään vain suostumuksellasi.",
+  "changeChoice": "Voit muuttaa tai peruuttaa valintasi milloin tahansa sivuston alatunnisteen evästeasetuksista. Lue lisää",
+  "accept": "Hyväksy kaikki",
+  "necessaryOnly": "Vain välttämättömät",
+  "privacyLink": "tietosuojaselosteesta"
   }
 }
