@@ -115,6 +115,12 @@
   .order-receipt-container .text-gray-400 {
     color: #9ca3af !important;
   }
+
+  /* Keep the cookie banner's "necessary only" button text readable against the white banner
+     background, overriding the global "text-gray-*" hover-only-visible rule above. */
+  button.cookie-banner-btn-outline.cookie-banner-btn-outline {
+    color: #374151 !important;
+  }
 }
 
 /* Center container */

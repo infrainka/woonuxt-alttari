@@ -54,13 +54,9 @@ onBeforeUnmount(() => {
   color: #374151;
 }
 
-/* The global rule lives in @layer utilities; an unlayered !important always loses to a layered one, */
-/* so this override must join that layer too (then higher specificity wins within it). */
-@layer utilities {
-  button.cookie-banner-btn-outline.cookie-banner-btn-outline {
-    color: #374151 !important;
-  }
-}
-
+/* The ".cookie-banner-btn-outline" color override lives in main.css's shared @layer utilities block.
+   It must NOT be declared here: component-scoped styles get inlined into <head> ahead of the main
+   stylesheet during static generation, and a fresh "@layer utilities" here would register that layer
+   name first, making it the lowest-priority layer site-wide and breaking Tailwind utilities everywhere. */
 </style>
 
