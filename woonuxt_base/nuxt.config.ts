@@ -80,7 +80,22 @@ export default defineNuxtConfig({
   modules: [
     resolve('./modules/woonuxt-bridge.ts'),
     '@nuxt/icon',
-    ['@nuxt/image', { provider: getImageProvider(), format: ['avif', 'webp'] }],
+    [
+      '@nuxt/image', 
+      { 
+        provider: getImageProvider(), 
+        format: ['avif', 'webp'],
+        screens: {
+          xs: 320,
+          sm: 400,
+          md: 768,
+          lg: 1024,
+          xl: 1280,
+          xxl: 1536,
+          '2xl': 1536
+        }
+      }
+    ],
     '@nuxtjs/i18n',
     '@nuxt/eslint',
     '@vite-pwa/nuxt',

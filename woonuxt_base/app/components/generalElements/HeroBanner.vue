@@ -6,9 +6,9 @@
       src="/images/hero-4.jpg"
       alt="Hero image"
       loading="eager"
-      sizes="sm:100vw md:100vw lg:100vw xl:100vw 2xl:1400px"
+      sizes="100vw 2xl:1400px"
       :preload="{ fetchPriority: 'high' }"
-:img-attrs="{ class: 'object-cover w-full h-full' }" />
+:img-attrs="{ class: 'object-cover w-full h-full', fetchpriority: 'high' }" />
 <div class="container absolute inset-0 flex flex-col items-start justify-center text-white">
   
 <h1 class="text-3xl font-bold md:mb-4 md:text-4xl lg:text-6xl">
