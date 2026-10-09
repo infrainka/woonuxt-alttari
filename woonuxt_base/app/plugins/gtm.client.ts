@@ -1,3 +1,5 @@
+
+
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
   const gtmId = config.public.gtmId;
@@ -10,21 +12,25 @@ export default defineNuxtPlugin((nuxtApp) => {
   function gtag(){ window.dataLayer.push(arguments); }
   window.gtag = window.gtag || gtag;
 
-  gtag('consent', 'default', {
-    'analytics_storage': hasAnalyticsConsent.value ? 'granted' : 'denied',
-    'ad_storage': hasAnalyticsConsent.value ? 'granted' : 'denied'
-  });
+  const consentState = (granted: boolean) => {
+    const v = granted ? 'granted' : 'denied';
+    return { analytics_storage: v, ad_storage: v, ad_user_data: v, ad_personalization: v };
+  };
+
+  gtag('consent', 'default', consentState(hasAnalyticsConsent.value));
 
   window.dataLayer.push({
     'gtm.start': new Date().getTime(),
     event: 'gtm.js'
   });
 
-  useHead({
-    script: [
-      { src: `https://www.googletagmanager.com/gtm.js?id=${gtmId}`, async: true }
-    ]
-  });
+  // Inject directly: useHead in a client plugin can be skipped after hydration
+  if (!document.querySelector(`script[src*="googletagmanager.com/gtm.js?id=${gtmId}"]`)) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
+    document.head.appendChild(script);
+  }
 
   nuxtApp.hook('page:finish', () => {
     setTimeout(() => {
@@ -40,10 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   watch(
     hasAnalyticsConsent,
     (granted) => {
-      gtag('consent', 'update', {
-        'analytics_storage': granted ? 'granted' : 'denied',
-        'ad_storage': granted ? 'granted' : 'denied'
-      });
+      gtag('consent', 'update', consentState(granted));
     }
   );
 });
