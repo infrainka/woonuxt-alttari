@@ -1,0 +1,32 @@
+# Lightweight counterpart to `getProducts` used by the product listing pages (/products,
+# /product-category/**, /collections). It reuses the same `where` shape and pagination as
+# `getProducts` but fetches trimmed per-product fragments (see ProductListingCard.gql) so large
+# batches resolve and transfer significantly faster. `getProducts` itself is left untouched and
+# still powers other call sites (e.g. the homepage's popular products).
+query getProductsLight($after: String, $slug: [String], $first: Int = 50, $orderby: ProductsOrderByEnum = DATE) {
+  products(
+    first: $first
+    after: $after
+    where: { categoryIn: $slug, visibility: VISIBLE, minPrice: 0, orderby: { field: $orderby, order: DESC }, status: "publish" }
+  ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    nodes {
+      name
+      slug
+      type
+      description
+      databaseId
+      id
+      averageRating
+      reviewCount
+      ...Terms
+      ...ProductCategories
+      ...ProductListingSimpleProduct
+      ...ProductListingVariableProduct
+      ...ProductListingExternalProduct
+    }
+  }
+}

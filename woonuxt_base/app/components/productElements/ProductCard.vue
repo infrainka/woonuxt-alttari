@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ImageFragment, Product, ProductVariationFragment, VariationAttribute } from '#types/gql';
+import type { Product, ProductListingImage, ProductListingVariation } from '#types/gql';
 
 const route = useRoute();
 const { storeSettings } = useAppConfig();
@@ -29,11 +29,12 @@ const currentSlide = ref(0);
 
 const mainImage = computed<string>(() => props.node?.image?.productCardSourceUrl || props.node?.image?.sourceUrl || placeholderImage);
 
-const matchesSelectedColor = (variation: ProductVariationFragment) => {
+// `ProductListingVariation`/`ProductListingImage` only declare the fields actually read below, so
+// they accept both the lightweight listing data and the full single-product `Variation`/`Image`
+// fragments (which are supersets of these fields).
+const matchesSelectedColor = (variation: ProductListingVariation) => {
   if (!paColor.value.length) return false;
-  const hasMatchingAttributes = variation.attributes?.nodes?.some((attribute: VariationAttribute) =>
-    paColor.value.some((color) => attribute?.value?.includes(color)),
-  );
+  const hasMatchingAttributes = variation.attributes?.nodes?.some((attribute) => paColor.value.some((color) => attribute?.value?.includes(color)));
   const hasMatchingSlug = paColor.value.some((color) => variation.slug?.includes(color));
   return hasMatchingAttributes || hasMatchingSlug;
 };
@@ -46,7 +47,7 @@ const sliderImages = computed<ProductImage[]>(() => {
     seen.add(image.src);
     images.push(image);
   };
-  const addVariationImage = (variation: ProductVariationFragment) => {
+  const addVariationImage = (variation: ProductListingVariation) => {
     const src = variation?.image?.productCardSourceUrl || variation?.image?.sourceUrl;
     if (!src) return;
     addImage({
@@ -56,7 +57,7 @@ const sliderImages = computed<ProductImage[]>(() => {
       key: `variation-${variation?.databaseId || src}`,
     });
   };
-  const addGalleryImage = (image: ImageFragment) => {
+  const addGalleryImage = (image: ProductListingImage) => {
     if (!image?.sourceUrl) return;
     addImage({
       src: image.sourceUrl,
@@ -76,9 +77,9 @@ const sliderImages = computed<ProductImage[]>(() => {
   };
 
   if (paColor.value.length) {
-    const matching = variations.filter((variation: ProductVariationFragment) => matchesSelectedColor(variation));
+    const matching = variations.filter((variation) => matchesSelectedColor(variation));
     if (matching.length) {
-      if (matching.some((variation: ProductVariationFragment) => (variation?.image?.productCardSourceUrl || variation?.image?.sourceUrl) === main.src)) {
+      if (matching.some((variation) => (variation?.image?.productCardSourceUrl || variation?.image?.sourceUrl) === main.src)) {
         addImage(main);
       }
       matching.forEach(addVariationImage);
@@ -99,7 +100,7 @@ const sliderImages = computed<ProductImage[]>(() => {
 const activeVariationImageSrc = computed<string | null>(() => {
   if (!paColor.value.length) return null;
   const variations = props.node?.variations?.nodes || [];
-  const activeColorImage = variations.filter((variation: ProductVariationFragment) => matchesSelectedColor(variation));
+  const activeColorImage = variations.filter((variation) => matchesSelectedColor(variation));
   if (activeColorImage?.length) return activeColorImage[0]?.image?.productCardSourceUrl || activeColorImage[0]?.image?.sourceUrl || null;
   return null;
 });

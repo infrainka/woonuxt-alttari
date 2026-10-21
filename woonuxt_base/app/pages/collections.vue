@@ -8,12 +8,14 @@ type Collection = {
   products: Product[];
 };
 
+const { fetchAllProducts } = useProducts();
+
 const [{ data: productsData }, { data: collectionsData }] = await Promise.all([
-  useAsyncGql('getProducts'),
+  useAsyncData('all-products-collections', () => fetchAllProducts()),
   useAsyncGql('getCollections', { tax: ['PAKOKOELMAT' as any] }),
 ]);
 
-const products = (productsData.value?.products?.nodes || []) as Product[];
+const products = (productsData.value || []) as Product[];
 const rawCollections = collectionsData.value?.terms?.nodes || [];
 
 const collections: Collection[] = [];

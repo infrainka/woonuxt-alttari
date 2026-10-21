@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Product } from '#types/gql';
 
-const { setProducts, updateProductList } = useProducts();
+const { setProducts, updateProductList, fetchAllProducts } = useProducts();
 const { storeSettings } = useAppConfig();
 const route = useRoute();
 const routeSlug = route.params.slug ?? route.params.categorySlug;
@@ -9,8 +9,10 @@ const slug = Array.isArray(routeSlug) ? routeSlug[0] : routeSlug;
 // 'kaikki' means "all", so it's not a real WooCommerce category to filter by
 const categorySlug = slug === 'kaikki' ? undefined : slug;
 
-const { data, error, status } = await useAsyncGql('getProducts', { slug: categorySlug ? [categorySlug] : undefined });
-const productsInCategory = computed<Product[]>(() => (data.value?.products?.nodes ?? []) as Product[]);
+const { data, error, status } = await useAsyncData(`products-category-${categorySlug ?? 'all'}`, () =>
+  fetchAllProducts({ slug: categorySlug ? [categorySlug] : undefined }),
+);
+const productsInCategory = computed<Product[]>(() => data.value ?? []);
 const isLoading = computed<boolean>(() => status.value === 'idle' || status.value === 'pending');
 const hasError = computed<boolean>(() => Boolean(error.value));
 

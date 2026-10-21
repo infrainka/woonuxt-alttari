@@ -1,4 +1,30 @@
 import type { Product } from '#types/gql';
+import type { GetProductsLightQueryVariables } from '#gql/default';
+
+export type ProductListingVariables = Omit<GetProductsLightQueryVariables, 'after' | 'first'>;
+
+/**
+ * The `getProductsLight` query only returns a single page of results, so this follows the
+ * `pageInfo` cursor until `hasNextPage` is false to collect every matching product. It uses the
+ * lightweight listing fragments (see ProductListingCard.gql) instead of the full `getProducts`
+ * query, which significantly speeds up fetching large batches.
+ */
+export async function fetchAllProducts(variables: ProductListingVariables = {}): Promise<Product[]> {
+  const gql = useWooGraphQL();
+  const batchSize = 100;
+  const allProducts: Product[] = [];
+  let after: string | null | undefined;
+  let hasNextPage = true;
+
+  while (hasNextPage) {
+    const { products } = await gql.getProductsLight({ ...variables, first: batchSize, after });
+    allProducts.push(...((products?.nodes ?? []) as Product[]));
+    after = products?.pageInfo?.endCursor;
+    hasNextPage = Boolean(products?.pageInfo?.hasNextPage && after);
+  }
+
+  return allProducts;
+}
 
 export function useProducts() {
   // Declare the state variables and the setter functions
@@ -59,5 +85,5 @@ export function useProducts() {
     }
   }
 
-  return { products, allProducts, setProducts, updateProductList };
+  return { products, allProducts, setProducts, updateProductList, fetchAllProducts };
 }

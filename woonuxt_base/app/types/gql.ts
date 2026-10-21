@@ -10,7 +10,7 @@ import type {
   GetCartQuery,
   GetProductCategoriesQuery,
   GetProductQuery,
-  GetProductsQuery,
+  GetProductsLightQuery,
   ImageFragment,
   LineItemFragment,
   LoginClientFragment,
@@ -65,6 +65,34 @@ export type ProductImageFields = {
   galleryImages?: OptionalConnection<ImageFragment> | null;
 };
 
+// Lighter counterparts of ProductImageFields/ProductVariationFields matching the trimmed
+// `getProductsLight` listing query (see ProductListingCard.gql) — it drops fields (like `srcSet`
+// and per-variation price/stock) that ProductCard and the listing pages never read. They reuse
+// `ProductImage` (no `srcSet`) rather than `ImageWithSizes`, matching what's actually selected for
+// both the top-level product image and per-variation images in every product listing query.
+export type ProductListingImage = {
+  sourceUrl?: string | null;
+  altText?: string | null;
+  title?: string | null;
+  databaseId?: number | null;
+};
+
+export type ProductListingImageFields = {
+  image?: ProductImage | null;
+  galleryImages?: OptionalConnection<ProductListingImage> | null;
+};
+
+export type ProductListingVariation = {
+  databaseId?: number | null;
+  slug?: string | null;
+  image?: ProductImage | null;
+  attributes?: OptionalConnection<{ value?: string | null }> | null;
+};
+
+export type ProductListingVariationFields = {
+  variations?: OptionalConnection<ProductListingVariation> | null;
+};
+
 export type ProductPricingFields = {
   price?: string | null;
   regularPrice?: string | null;
@@ -108,11 +136,11 @@ export type ProductDetail = NonNullable<GetProductQuery['product']> &
   ProductVariationFields &
   ProductAttributeFields &
   ProductStockFields;
-export type ProductListItem = ConnectionNode<NonNullable<GetProductsQuery['products']>> &
-  ProductImageFields &
+export type ProductListItem = ConnectionNode<NonNullable<GetProductsLightQuery['products']>> &
+  ProductListingImageFields &
   ProductPricingFields &
   ProductReviewFields &
-  ProductVariationFields & {
+  ProductListingVariationFields & {
     description?: string | null;
     shortDescription?: string | null;
     date?: string | null;

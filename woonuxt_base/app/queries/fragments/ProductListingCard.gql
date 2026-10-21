@@ -1,0 +1,109 @@
+# Lightweight fragments used only by `getProductsLight` (the product grid/listing query). They
+# mirror SimpleProduct/VariableProduct/ExternalProduct but omit fields ProductCard and the
+# client-side filter/sort/search pipeline never read (full variation pricing/stock, extra gallery
+# images, dimensions, etc.), so listing pages fetch and transfer much less data per product.
+fragment ProductListingImage on MediaItem {
+  sourceUrl(size: LARGE)
+  altText
+  title
+  databaseId
+}
+
+fragment ProductListingVariation on ProductVariation {
+  databaseId
+  slug
+  image {
+    sourceUrl
+    altText
+    title
+    databaseId
+    cartSourceUrl: sourceUrl(size: THUMBNAIL)
+    productCardSourceUrl: sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+  }
+  attributes {
+    nodes {
+      value
+    }
+  }
+}
+
+fragment ProductListingSimpleProduct on SimpleProduct {
+  price
+  rawPrice: price(format: RAW)
+  date
+  regularPrice
+  rawRegularPrice: regularPrice(format: RAW)
+  salePrice
+  rawSalePrice: salePrice(format: RAW)
+  stockStatus
+  onSale
+  image {
+    sourceUrl
+    altText
+    title
+    databaseId
+    cartSourceUrl: sourceUrl(size: THUMBNAIL)
+    productCardSourceUrl: sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+  }
+  galleryImages(first: 8) {
+    nodes {
+      ...ProductListingImage
+      databaseId
+    }
+  }
+}
+
+fragment ProductListingVariableProduct on VariableProduct {
+  price
+  rawPrice: price(format: RAW)
+  date
+  regularPrice
+  rawRegularPrice: regularPrice(format: RAW)
+  salePrice
+  rawSalePrice: salePrice(format: RAW)
+  stockStatus
+  onSale
+  image {
+    sourceUrl
+    altText
+    title
+    databaseId
+    cartSourceUrl: sourceUrl(size: THUMBNAIL)
+    productCardSourceUrl: sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+  }
+  variations(first: 30) {
+    nodes {
+      ...ProductListingVariation
+    }
+  }
+  galleryImages(first: 8) {
+    nodes {
+      ...ProductListingImage
+      databaseId
+    }
+  }
+}
+
+fragment ProductListingExternalProduct on ExternalProduct {
+  price
+  rawPrice: price(format: RAW)
+  regularPrice
+  rawRegularPrice: regularPrice(format: RAW)
+  salePrice
+  rawSalePrice: salePrice(format: RAW)
+  onSale
+  image {
+    sourceUrl
+    altText
+    title
+    databaseId
+    cartSourceUrl: sourceUrl(size: THUMBNAIL)
+    productCardSourceUrl: sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+  }
+  galleryImages(first: 8) {
+    nodes {
+      ...ProductListingImage
+      databaseId
+    }
+  }
+}

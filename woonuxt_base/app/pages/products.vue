@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Product } from '#types/gql';
 
-const { setProducts, updateProductList } = useProducts();
+const { setProducts, updateProductList, fetchAllProducts } = useProducts();
 const route = useRoute();
 const { storeSettings } = useAppConfig();
 
-const { data, error, status } = await useAsyncGql('getProducts');
-const allProducts = computed<Product[]>(() => (data.value?.products?.nodes ?? []) as Product[]);
+const { data, error, status } = await useAsyncData('all-products', () => fetchAllProducts());
+const allProducts = computed<Product[]>(() => data.value ?? []);
 const isLoading = computed<boolean>(() => status.value === 'idle' || status.value === 'pending');
 const hasError = computed<boolean>(() => Boolean(error.value));
 const hasProducts = computed<boolean>(() => allProducts.value.length > 0);
