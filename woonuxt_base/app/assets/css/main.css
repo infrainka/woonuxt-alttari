@@ -33,7 +33,8 @@
   }
 
   #price-from,
-  #price-to {
+  #price-to,
+  #product-search-input {
     color: #111827 !important;
   }
 
