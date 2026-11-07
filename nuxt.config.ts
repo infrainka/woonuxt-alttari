@@ -4,6 +4,19 @@ export default defineNuxtConfig({
 
   components: [{ path: './components', pathPrefix: false }],
 
+  modules: ['@nuxtjs/sitemap'],
+
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://alttari.shop',
+    name: 'Alttari',
+  },
+
+  sitemap: {
+    sources: ['/api/__sitemap__/urls'],
+    // Transactional / private pages that shouldn't be indexed.
+    exclude: ['/cart', '/checkout/**', '/my-account/**', '/order-summary/**', '/oauth/**', '/wishlist'],
+  },
+
   /**
    * Depending on your servers capabilities, you may need to adjust the following settings.
    * It will affect the build time but also increase the reliability of the build process.
