@@ -14,6 +14,49 @@ onMounted(() => {
   void ensurePaymentGatewaysLoaded();
 });
 
+const { trackInitiateCheckout } = useAnalyticsEvents();
+let checkoutTracked = false;
+
+// Cart line items are a union of product types (Simple/Variable/External/...); only some of them
+// carry raw pricing fields, so this reads them defensively instead of assuming a single shape.
+const getRawPrice = (node: unknown): string | null | undefined => {
+  if (!node || typeof node !== 'object') return undefined;
+  const fields = node as Record<string, unknown>;
+  return (fields.rawPrice ?? fields.rawSalePrice ?? fields.rawRegularPrice) as string | null | undefined;
+};
+
+const toNumericPrice = (raw: string | null | undefined): number => {
+  const parsed = Number.parseFloat(String(raw ?? '0').split(',')[0] ?? '0');
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
+// Fire InitiateCheckout once per checkout attempt, as soon as the cart is loaded.
+watch(
+  cart,
+  (currentCart) => {
+    if (checkoutTracked || !currentCart || currentCart.isEmpty) return;
+    const nodes = currentCart.contents?.nodes ?? [];
+    if (!nodes.length) return;
+
+    checkoutTracked = true;
+
+    const items = nodes.map((node) => {
+      const variationNode = node.variation?.node;
+      const productNode = node.product?.node;
+      return {
+        id: String(variationNode?.databaseId ?? productNode?.databaseId ?? ''),
+        name: productNode?.name,
+        price: toNumericPrice(getRawPrice(variationNode ?? productNode)),
+        quantity: node.quantity ?? 1,
+      };
+    });
+
+    const parsedTotal = Number.parseFloat(currentCart.rawTotal || '0');
+    trackInitiateCheckout(items, Number.isFinite(parsedTotal) && parsedTotal > 0 ? parsedTotal : undefined);
+  },
+  { immediate: true },
+);
+
 const buttonText = ref<string>(isProcessingOrder.value ? t('general.processing') : t('shop.checkoutButton'));
 const checkoutPaymentGateways = paymentGateways;
 const selectedPaymentMethodId = computed<string>(() => resolvePaymentMethodId(orderInput.value.paymentMethod));

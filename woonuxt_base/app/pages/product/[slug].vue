@@ -203,9 +203,28 @@ const selectProductInput = computed<AddToCartInput>(() => {
   return input;
 });
 
+const { trackAddToCart } = useAnalyticsEvents();
+
+// Price fields are formatted strings (e.g. "19,99 €"); rawPrice already reflects the current
+// effective price (sale or regular), falling back to rawSalePrice/rawRegularPrice for safety.
+// Variable-product price ranges come through as "10,20" — take the lower bound in that case.
+const toNumericPrice = (target: ProductDetail | Variation): number => {
+  const raw = target.rawPrice ?? target.rawSalePrice ?? target.rawRegularPrice ?? '0';
+  const parsed = Number.parseFloat(String(raw).split(',')[0] ?? '0');
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
 const handleAddToCart = (): void => {
   if (!product.value) return;
   if (unselectedAttributes.value.length > 0) return;
+
+  trackAddToCart({
+    id: String(displayProduct.value.databaseId ?? product.value.databaseId ?? ''),
+    name: product.value.name,
+    price: toNumericPrice(displayProduct.value),
+    quantity: quantity.value,
+  });
+
   void addToCart(selectProductInput.value, { product: product.value, variation: activeVariation.value });
 };
 

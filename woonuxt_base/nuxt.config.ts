@@ -61,6 +61,7 @@ export default defineNuxtConfig({
     resolve('./app/plugins/payment-gateways/cod.ts'),
     resolve('./app/plugins/payment-gateways/cheque.ts'),
     resolve('./app/plugins/gtm.client.ts'),
+    resolve('./app/plugins/meta-pixel.client.ts'),
   ],
 
   components: [{ path: resolve('./app/components'), pathPrefix: false }],
@@ -106,6 +107,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       gtmId: '',
+      metaPixelId: '',
       'graphql-client': {
         clients: {
           default: {

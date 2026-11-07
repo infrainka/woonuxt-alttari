@@ -1,5 +1,3 @@
-
-
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig();
   const gtmId = config.public.gtmId;
@@ -9,7 +7,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { hasAnalyticsConsent } = useCookieConsent();
 
   window.dataLayer = window.dataLayer || [];
-  function gtag(){ window.dataLayer.push(arguments); }
+  function gtag(...args: unknown[]) {
+    window.dataLayer.push(args);
+  }
   window.gtag = window.gtag || gtag;
 
   const consentState = (granted: boolean) => {
@@ -21,7 +21,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   window.dataLayer.push({
     'gtm.start': new Date().getTime(),
-    event: 'gtm.js'
+    event: 'gtm.js',
   });
 
   // Inject directly: useHead in a client plugin can be skipped after hydration
@@ -37,16 +37,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       window.dataLayer.push({
         event: 'virtual_page_view',
         page_location: window.location.href,
-        page_title: document.title
+        page_title: document.title,
       });
     }, 50);
   });
 
   // Listen to changes in the user's analytics consent and update GTM accordingly
-  watch(
-    hasAnalyticsConsent,
-    (granted) => {
-      gtag('consent', 'update', consentState(granted));
-    }
-  );
+  watch(hasAnalyticsConsent, (granted) => {
+    gtag('consent', 'update', consentState(granted));
+  });
 });

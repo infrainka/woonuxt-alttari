@@ -42,6 +42,7 @@ fragment Cart on Cart {
       }
       variation {
         node {
+          databaseId
           name
           slug
           price

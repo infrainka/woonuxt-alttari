@@ -114,6 +114,55 @@ async function getOrder() {
   isLoaded.value = true;
 }
 
+const { trackPurchase } = useAnalyticsEvents();
+let purchaseTracked = false;
+const PURCHASE_TRACKED_STORAGE_PREFIX = 'woonuxt:purchase-tracked:';
+
+// sessionStorage guard so a refresh of the order-received page (or the delayed status re-fetch
+// above) never fires a second Purchase event for the same order within this browser session.
+const alreadyTrackedInSession = (orderId: string): boolean => {
+  if (!import.meta.client) return false;
+  try {
+    const storageKey = PURCHASE_TRACKED_STORAGE_PREFIX + orderId;
+    if (window.sessionStorage.getItem(storageKey) === '1') return true;
+    window.sessionStorage.setItem(storageKey, '1');
+    return false;
+  } catch {
+    return false;
+  }
+};
+
+// Fire Purchase once, as soon as the order-received (checkout confirmation) page has an order
+// that isn't failed/cancelled. Reaching this page at all means the order was placed in WooCommerce.
+watch(
+  order,
+  (currentOrder) => {
+    if (purchaseTracked || !isCheckoutPage.value || !currentOrder) return;
+    if (currentOrder.status === OrderStatusEnum.Failed || currentOrder.status === OrderStatusEnum.Cancelled) return;
+
+    const orderId = String(currentOrder.databaseId ?? currentOrder.orderNumber ?? '');
+    if (!orderId) return;
+
+    purchaseTracked = true;
+    if (alreadyTrackedInSession(orderId)) return;
+
+    const items = (currentOrder.lineItems?.nodes ?? []).map((lineItem) => {
+      const quantity = lineItem.quantity ?? 1;
+      const lineTotal = Number.parseFloat(lineItem.rawTotal || '0');
+      return {
+        id: String(lineItem.variationId ?? lineItem.productId ?? ''),
+        name: lineItem.product?.node?.name,
+        price: Number.isFinite(lineTotal) && quantity > 0 ? lineTotal / quantity : 0,
+        quantity,
+      };
+    });
+
+    const orderTotal = Number.parseFloat(currentOrder.rawTotal || '0');
+    trackPurchase(orderId, items, Number.isFinite(orderTotal) ? orderTotal : undefined);
+  },
+  { immediate: true },
+);
+
 const refreshOrder = async () => {
   isLoaded.value = false;
   await getOrder();

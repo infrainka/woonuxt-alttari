@@ -18,7 +18,10 @@ fragment LineItemVariation on ProductVariation {
 fragment LineItem on LineItem {
   quantity
   total
+  rawTotal: total(format: RAW)
   id
+  productId
+  variationId
   product {
     node {
       ...LineItemProduct
