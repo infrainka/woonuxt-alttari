@@ -203,7 +203,7 @@ const selectProductInput = computed<AddToCartInput>(() => {
   return input;
 });
 
-const { trackAddToCart } = useAnalyticsEvents();
+const { trackViewContent, trackAddToCart } = useAnalyticsEvents();
 
 // Price fields are formatted strings (e.g. "19,99 €"); rawPrice already reflects the current
 // effective price (sale or regular), falling back to rawSalePrice/rawRegularPrice for safety.
@@ -227,6 +227,18 @@ const handleAddToCart = (): void => {
 
   void addToCart(selectProductInput.value, { product: product.value, variation: activeVariation.value });
 };
+
+// ViewContent fires once per product page load. It uses the same ID as AddToCart (the variation
+// ID when a variation is preselected via the URL, otherwise the product ID).
+onMounted(() => {
+  if (!product.value) return;
+  trackViewContent({
+    id: String(displayProduct.value.databaseId ?? product.value.databaseId ?? ''),
+    name: product.value.name,
+    price: toNumericPrice(displayProduct.value),
+    quantity: 1,
+  });
+});
 
 const updateSelectedVariations = (variations: VariationAttribute[]): void => {
   if (!product.value?.variations) return;

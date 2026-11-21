@@ -43,6 +43,29 @@ export function useAnalyticsEvents() {
   };
 
   /**
+   * Fire when a product detail page is viewed. Use the same ID as AddToCart/Purchase so Meta's
+   * catalog matching (dynamic ads) links the view to the purchase.
+   */
+  const trackViewContent = (item: AnalyticsItem): void => {
+    if (!hasAnalyticsConsent.value) return;
+    const value = round2(item.price * item.quantity);
+
+    pushDataLayer({
+      event: 'view_item',
+      ecommerce: { currency: currency.value, value, items: [toGa4Item(item)] },
+    });
+
+    trackPixelEvent('ViewContent', {
+      content_ids: [item.id],
+      content_type: 'product',
+      content_name: item.name ?? undefined,
+      value,
+      currency: currency.value,
+      contents: [toPixelContent(item)],
+    });
+  };
+
+  /**
    * Fire when a product is added to the cart (product detail page "Add to cart").
    */
   const trackAddToCart = (item: AnalyticsItem): void => {
@@ -113,5 +136,5 @@ export function useAnalyticsEvents() {
     );
   };
 
-  return { trackAddToCart, trackInitiateCheckout, trackPurchase };
+  return { trackViewContent, trackAddToCart, trackInitiateCheckout, trackPurchase };
 }
