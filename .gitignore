@@ -38,3 +38,5 @@ logs
 *.pem
 
 woonuxt-settings
+*.csv
+.~lock.*#

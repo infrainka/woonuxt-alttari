@@ -47,11 +47,74 @@ export function useSEOFallbacks(info: ProductDetail, path: string): SeoHeadData 
 
   const link = [{ rel: 'canonical', href: canonical }];
 
+  // ── Product structured data (schema.org Product + Offer) ──
+  // Uses only what the GraphQL query returns, so it renders even when Yoast's own
+  // schema is absent or stripped by sanitize. mergeSEOFallbacks keeps Yoast scripts
+  // and appends these; a Yoast Product block + this fallback block can coexist but
+  // Google validates each independently, so the fallback is always well-formed.
+  const script: SeoHeadData['script'] = [];
+
+  const priceTarget = info as Partial<
+    Pick<ProductDetail, 'rawPrice' | 'rawRegularPrice' | 'rawSalePrice' | 'sku' | 'stockStatus'>
+  >;
+
+  const toNumber = (raw?: string | null): number => {
+    if (!raw) return NaN;
+    // Prices come formatted per locale — "19,99 €" (fi) or "19.99" (en)
+    const normalized = raw.includes(',') && !raw.includes('.') ? raw.replace(/[^\d,]/g, '').replace(',', '.') : raw.replace(/[^\d.]/g, '');
+    return Number.parseFloat(normalized);
+  };
+
+  const rawPrice = toNumber(priceTarget.rawPrice);
+  const rawRegular = toNumber(priceTarget.rawRegularPrice);
+  const rawSale = toNumber(priceTarget.rawSalePrice);
+  const salePrice = Number.isFinite(rawSale) && rawSale > 0 ? rawSale : NaN;
+  const price = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice : salePrice || rawRegular;
+
+  if (info.name && Number.isFinite(price) && price > 0) {
+    const currency = useRuntimeConfig().public?.CURRENCY_CODE || 'EUR';
+
+    const offer: Record<string, unknown> = {
+      '@type': 'Offer',
+      url: canonical,
+      price: price.toFixed(2),
+      priceCurrency: currency,
+      availability:
+        priceTarget.stockStatus === 'IN_STOCK'
+          ? 'https://schema.org/InStock'
+          : priceTarget.stockStatus === 'ONBACKORDER'
+            ? 'https://schema.org/BackOrder'
+            : 'https://schema.org/OutOfStock',
+    };
+
+    // Only send a sale price when it's genuinely lower than regular, otherwise
+    // Google complains about price mismatch between Offer.price and spec.
+    if (salePrice && rawRegular && salePrice < rawRegular) {
+      offer.priceSpecification = {
+        '@type': 'UnitPriceSpecification',
+        price: salePrice.toFixed(2),
+        priceCurrency: currency,
+      };
+    }
+
+    const schema: Record<string, unknown> = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: info.name,
+      description,
+      image: ogImage,
+      sku: priceTarget.sku || undefined,
+      offers: offer,
+    };
+
+    script.push({ type: 'application/ld+json', innerHTML: JSON.stringify(schema) });
+  }
+
   return {
     title,
     meta,
     link,
-    script: [],
+    script,
   };
 }
 
