@@ -1,4 +1,5 @@
 import type { ProductDetail, WooNuxtSEOItem } from '#types/gql';
+import { StockStatusEnum } from '#gql/default';
 
 import type { SeoHeadData } from '#types/seo-provider';
 
@@ -60,8 +61,11 @@ export function useSEOFallbacks(info: ProductDetail, path: string): SeoHeadData 
 
   const toNumber = (raw?: string | null): number => {
     if (!raw) return NaN;
+    // WooGraphQL returns variable-product price ranges as "18, 18" or "18 - 99".
+    // Split on ", " (range comma) or " - " / " – " and take the first (lowest) price.
+    const first = raw.split(/,\s+|\s[-\u2013]\s/)[0] ?? '';
     // Prices come formatted per locale — "19,99 €" (fi) or "19.99" (en)
-    const normalized = raw.includes(',') && !raw.includes('.') ? raw.replace(/[^\d,]/g, '').replace(',', '.') : raw.replace(/[^\d.]/g, '');
+    const normalized = first.includes(',') && !first.includes('.') ? first.replace(/[^\d,]/g, '').replace(',', '.') : first.replace(/[^\d.]/g, '');
     return Number.parseFloat(normalized);
   };
 
@@ -80,9 +84,9 @@ export function useSEOFallbacks(info: ProductDetail, path: string): SeoHeadData 
       price: price.toFixed(2),
       priceCurrency: currency,
       availability:
-        priceTarget.stockStatus === 'IN_STOCK'
+        priceTarget.stockStatus === StockStatusEnum.InStock
           ? 'https://schema.org/InStock'
-          : priceTarget.stockStatus === 'ONBACKORDER'
+          : priceTarget.stockStatus === StockStatusEnum.OnBackorder
             ? 'https://schema.org/BackOrder'
             : 'https://schema.org/OutOfStock',
     };
@@ -102,7 +106,9 @@ export function useSEOFallbacks(info: ProductDetail, path: string): SeoHeadData 
       '@type': 'Product',
       name: info.name,
       description,
-      image: ogImage,
+      // Use the direct, original product image (no /_ipx/ proxy, no 1200x630 crop) —
+      // Google prefers the original, high-resolution product image for Product schema.
+      image: makeAbsolute(imageURL) || undefined,
       sku: priceTarget.sku || undefined,
       offers: offer,
     };
@@ -139,6 +145,38 @@ export function mergeSEOFallbacks(providerData: SeoHeadData, fallbacks: SeoHeadD
     if (!existingLinkRels.has(fallbackLink.rel)) {
       merged.link.push(fallbackLink);
     }
+  });
+
+  // Append fallback scripts (e.g. Product JSON-LD) that aren't already present.
+  // Deduplicate by exact innerHTML first, then by JSON-LD @type so a Yoast Product
+  // schema and our fallback Product schema are never both emitted.
+  const existingScripts = new Set(merged.script.map((s) => s.innerHTML).filter(Boolean));
+  // Collect every JSON-LD @type, including nodes inside Yoast's "@graph" array
+  // and array-valued @type (e.g. ["Product", "ItemPage"]).
+  const collectTypes = (innerHTML: string): string[] => {
+    const types: string[] = [];
+    const visit = (node: unknown) => {
+      if (Array.isArray(node)) return node.forEach(visit);
+      if (!node || typeof node !== 'object') return;
+      const obj = node as Record<string, unknown>;
+      const t = obj['@type'];
+      if (typeof t === 'string') types.push(t);
+      else if (Array.isArray(t)) t.forEach((x) => typeof x === 'string' && types.push(x));
+      if (obj['@graph']) visit(obj['@graph']);
+    };
+    try {
+      visit(JSON.parse(innerHTML));
+    } catch {}
+    return types;
+  };
+
+  const existingJsonLdTypes = new Set<string>(merged.script.flatMap((s) => (s.innerHTML ? collectTypes(s.innerHTML) : [])));
+  fallbacks.script.forEach((fallbackScript) => {
+    if (!fallbackScript.innerHTML || existingScripts.has(fallbackScript.innerHTML)) return;
+    const fallbackTypes = collectTypes(fallbackScript.innerHTML);
+    if (fallbackTypes.some((t) => existingJsonLdTypes.has(t))) return;
+    merged.script.push(fallbackScript);
+    fallbackTypes.forEach((t) => existingJsonLdTypes.add(t));
   });
 
   return merged;
