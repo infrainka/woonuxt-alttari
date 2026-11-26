@@ -1,0 +1,17 @@
+# Duplicate URLs → canonical. "!" forces the redirect even if a prerendered file exists at the path.
+# Page 1 of any listing is the listing itself
+/page/1                /           301!
+/page/1/               /           301!
+/products/page/1              /products/         301!
+/products/page/1/             /products/         301!
+
+# "kaikki" (all) is not a real category — it duplicates /products/
+/product-category/kaikki             /products/         301!
+/product-category/kaikki/            /products/         301!
+/product-category/kaikki/page/1      /products/                301!
+/product-category/kaikki/page/1/     /products/                301!
+/product-category/kaikki/page/:n     /products/page/:n/               301!
+/product-category/kaikki/page/:n/    /products/page/:n/               301!
+
+/product-category/:slug/page/1       /product-category/:slug/         301!
+/product-category/:slug/page/1/      /product-category/:slug/         301!

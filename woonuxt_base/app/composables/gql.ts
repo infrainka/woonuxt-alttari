@@ -52,7 +52,20 @@ const headersToRecord = (headers?: GraphQLClientRequestHeaders): GqlHeaders => {
   return Object.fromEntries(new Headers(headers).entries());
 };
 
+// Headers that identify a single visitor (WooCommerce session JWT, auth token). They must never be
+// written into useState on the server: useState is serialized into the __NUXT_DATA__ payload, and with
+// prerender/ISR that HTML is shared by every visitor — they would all inherit the build-time session
+// (and therefore the same cart). On the server these live in a per-request, non-serialized store.
+const PRIVATE_HEADER_KEYS = new Set(['woocommerce-session', 'authorization']);
+const isPrivateHeader = (key: string): boolean => PRIVATE_HEADER_KEYS.has(key.toLowerCase());
+
 const useGqlHeaderState = () => useState<GqlHeaders>('woonuxt:gql:headers', () => ({}));
+
+const getServerPrivateHeaders = (nuxtApp = useNuxtApp()): GqlHeaders => {
+  const app = nuxtApp as typeof nuxtApp & { _woonuxtPrivateHeaders?: GqlHeaders };
+  app._woonuxtPrivateHeaders ??= {};
+  return app._woonuxtPrivateHeaders;
+};
 
 const getRuntimeClientConfig = (): RuntimeGraphQLClientConfig => {
   const runtimeConfig = useRuntimeConfig();
@@ -90,6 +103,7 @@ const getRequestHeaders = async ({
   return cleanHeaders({
     ...baseHeaders,
     ...headerState.value,
+    ...(import.meta.server ? getServerPrivateHeaders(nuxtApp) : {}),
     ...(token.value ? { Authorization: `Bearer ${token.value}` } : {}),
     ...headersToRecord(requestHeaders),
   });
@@ -125,12 +139,14 @@ export const normalizeGqlError = <T>(error: T): T => {
 
 export const useGqlHeaders = (headers: GqlHeaderInput): void => {
   const currentHeaders = useGqlHeaderState();
+  const serverPrivate = import.meta.server ? getServerPrivateHeaders() : null;
 
   for (const [key, value] of Object.entries(headers)) {
+    const target = serverPrivate && isPrivateHeader(key) ? serverPrivate : currentHeaders.value;
     if (typeof value === 'string' && value.length > 0) {
-      currentHeaders.value[key] = value;
+      target[key] = value;
     } else {
-      Reflect.deleteProperty(currentHeaders.value, key);
+      Reflect.deleteProperty(target, key);
     }
   }
 };

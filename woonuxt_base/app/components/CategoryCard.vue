@@ -13,7 +13,7 @@ const imgHeight = Math.round(imgWidth * 1.125);
 <template>
   <NuxtLink
     v-if="node"
-    :to="`/product-category/${decodeURIComponent(node.slug)}`"
+    :to="node.slug === 'kaikki' ? '/products/' : `/product-category/${decodeURIComponent(node.slug)}/`"
     class="relative flex justify-center overflow-hidden border border-white rounded-xl item snap-mandatory snap-x">
     <NuxtPicture
       :width="imgWidth"

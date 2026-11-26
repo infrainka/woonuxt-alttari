@@ -23,6 +23,17 @@ export default defineNuxtConfig({
     // Preserves the Nuxt SSR context across `await` boundaries in composables (native AsyncLocalStorage-based
     // tracking) so calls like useAuthTokens/useCart/useAuth after an await don't trigger NUXT_E1001 on the server.
     asyncContext: true,
+    // Netlify answers /foo with 301 → /foo/, so the slash form is canonical: every <NuxtLink> renders it.
+    defaults: {
+      nuxtLink: {
+        trailingSlash: 'append',
+      },
+    },
+  },
+
+  // Read by nuxt-site-config / @nuxtjs/sitemap (sitemap <loc>) and by useHelpers().withSlash.
+  site: {
+    trailingSlash: true,
   },
 
   vite: {
@@ -44,7 +55,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
+      htmlAttrs: { lang: 'fi-FI' },
       link: [
         { rel: 'icon', href: '/logo.png', type: 'image/svg+xml' },
         { rel: 'apple-touch-icon', href: '/logo.png', sizes: '180x180' },
@@ -153,6 +164,13 @@ export default defineNuxtConfig({
       ignore: ['/.netlify/images'],
     },
     routeRules: {
+      // Duplicate URLs → permanent redirects (removing them from the sitemap alone is not enough).
+      // On Netlify the authoritative copy is public/_redirects; these cover `nuxt dev`/preview/SSR hosts.
+      '/page/1': { redirect: { to: '/', statusCode: 301 } },
+      '/products/page/1': { redirect: { to: '/products/', statusCode: 301 } },
+      '/product-category/kaikki': { redirect: { to: '/products/', statusCode: 301 } },
+      '/product-category/kaikki/page/1': { redirect: { to: '/products/', statusCode: 301 } },
+      '/product-category/kaikki/page/**': { redirect: { to: '/products/page/**', statusCode: 301 } },
       // Serve the LCP-critical homepage from the CDN instead of fetching catalog data per request.
       '/': { prerender: true },
       // Disable prerendering for dynamic checkout/order pages
@@ -175,7 +193,7 @@ export default defineNuxtConfig({
   // Multilingual support
   i18n: {
     locales: [
-      { code: 'fi_FI', file: 'fi-FI.json', name: 'Suomi 🇫🇮' },
+      { code: 'fi_FI', language: 'fi-FI', file: 'fi-FI.json', name: 'Suomi 🇫🇮' },
       // en_US disabled until translations are complete — re-add { code: 'en_US', file: 'en-US.json', name: 'English 🇺🇸' } when ready
     ],
     langDir: 'locales',

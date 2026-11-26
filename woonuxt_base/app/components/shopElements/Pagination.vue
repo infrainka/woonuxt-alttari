@@ -16,8 +16,10 @@ const categorySlug = computed(() => {
 });
 
 const pageSrc = (pageNumber: number) => {
-  const base = categorySlug.value ? `/product-category/${categorySlug.value}/page/${pageNumber}` : `/products/page/${pageNumber}`;
-  return currentQuery.value ? `${base}/?${currentQuery.value}` : base;
+  // Page 1 is the listing itself; /page/1/ would be a duplicate URL (301-redirected in _redirects).
+  const listing = categorySlug.value ? `/product-category/${categorySlug.value}/` : '/products/';
+  const base = pageNumber <= 1 ? listing : `${listing}page/${pageNumber}/`;
+  return currentQuery.value ? `${base}?${currentQuery.value}` : base;
 };
 
 const prevSrc = (pageNumber: number) => pageSrc(Math.max(1, pageNumber - 1));

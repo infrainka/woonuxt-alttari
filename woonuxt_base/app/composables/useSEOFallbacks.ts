@@ -1,14 +1,24 @@
 import type { ProductDetail, WooNuxtSEOItem } from '#types/gql';
 import { StockStatusEnum } from '#gql/default';
+import { withTrailingSlash } from 'ufo';
 
 import type { SeoHeadData } from '#types/seo-provider';
+
+// Site-wide URL form is "/path/" (Netlify 301s the slashless form). Keep query/hash intact.
+export const toCanonicalUrl = (url: string): string => {
+  if (!url) return url;
+  const [base = '', rest = ''] = url.split(/(?=[?#])/, 2);
+  return withTrailingSlash(base) + rest;
+};
+
+const URL_META_KEYS = new Set(['og:url', 'twitter:url']);
 
 export function useSEOFallbacks(info: ProductDetail, path: string): SeoHeadData {
   const { frontEndUrl, stripHtml, wooNuxtSEO } = useHelpers();
   const img = useImage();
 
   const title = info.name || 'WooNuxt';
-  const canonical = frontEndUrl ? `${frontEndUrl}${path}` : path;
+  const canonical = toCanonicalUrl(frontEndUrl ? `${frontEndUrl}${path}` : path);
   const siteName = process.env.SITE_TITLE ?? 'WooNuxt';
   const imageURL = info.image?.sourceUrl ?? '/images/placeholder.jpg';
 
@@ -127,8 +137,8 @@ export function useSEOFallbacks(info: ProductDetail, path: string): SeoHeadData 
 export function mergeSEOFallbacks(providerData: SeoHeadData, fallbacks: SeoHeadData): SeoHeadData {
   const merged: SeoHeadData = {
     title: providerData.title || fallbacks.title,
-    meta: [...providerData.meta],
-    link: [...providerData.link],
+    meta: providerData.meta.map((m) => (m.content && URL_META_KEYS.has(m.property || m.name || '') ? { ...m, content: toCanonicalUrl(m.content) } : m)),
+    link: providerData.link.map((l) => (l.rel === 'canonical' && l.href ? { ...l, href: toCanonicalUrl(l.href) } : l)),
     script: [...providerData.script],
   };
   const existingMetaKeys = new Set(merged.meta.map((m) => m.property || m.name).filter(Boolean));
